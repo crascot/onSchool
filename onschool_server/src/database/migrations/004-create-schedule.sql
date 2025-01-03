@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS schedule (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    classes_id INTEGER NOT NULL UNIQUE,
+    FOREIGN KEY (classes_id) REFERENCES classes (id)
+)

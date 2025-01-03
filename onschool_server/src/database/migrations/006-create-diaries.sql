@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS diaries (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  student_id INTEGER,
+  FOREIGN KEY (student_id) REFERENCES students(id)
+)
