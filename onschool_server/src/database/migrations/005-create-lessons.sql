@@ -1,7 +1,10 @@
 CREATE TABLE IF NOT EXISTS lessons (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
+    subject TEXT NOT NULL,
+    start_time TEXT NOT NULL,
+    end_time TEXT NOT NULL,
     type TEXT NOT NULL,
+    date TEXT NOT NULL,
     schedule_id INTEGER NOT NULL,
-    FOREIGN KEY (schedule_id) REFERENCES schedule (id)
+    FOREIGN KEY (schedule_id) REFERENCES schedule (id) ON DELETE CASCADE
 )

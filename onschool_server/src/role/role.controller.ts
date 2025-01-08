@@ -7,47 +7,43 @@ import {
 	Post,
 	Put,
 } from '@nestjs/common';
-import { DatabaseService } from 'DATABASE/database.service';
+import { CreateRoleDto } from './dto/create-role-dto';
+import { RoleService } from './role.service';
 
 @Controller('role')
 export class RoleController {
-	constructor(private readonly dbService: DatabaseService) {}
+	constructor(private readonly roleService: RoleService) {}
 
 	@Get()
 	async getAllRole() {
-		return this.dbService.query('SELECT * FROM roles');
+		return this.roleService.getAllRole();
 	}
 
-	@Get(':roleId')
-	async getRole(@Param('roleId') roleId: string) {
-		return this.dbService.query('SELECT * FROM roles WHERE id = ?', [
-			roleId,
-		]);
+	@Get(':role_id')
+	async getRole(@Param('role_id') role_id: string) {
+		return this.roleService.getRole(role_id);
 	}
 
 	@Post()
-	async create(@Body() body: { name: string; description: string }) {
-		const { name, description } = body;
-		return this.dbService.run(
-			'INSERT INTO roles (name, description) VALUES (?, ?)',
-			[name, description]
-		);
+	async create(@Body() body: CreateRoleDto) {
+		return this.roleService.create(body);
 	}
 
-	@Put(':roleId')
+	@Post('/import')
+	async createRolesFromJson() {
+		return this.roleService.createRolesFromJson();
+	}
+
+	@Put(':role_id')
 	async update(
-		@Param('roleId') roleId: string,
-		@Body() body: { name: string; description: string }
+		@Param('role_id') role_id: string,
+		@Body() body: CreateRoleDto
 	) {
-		const { name, description } = body;
-		return this.dbService.run(
-			'UPDATE roles SET name = ?, description = ? WHERE id = ?',
-			[name, description, roleId]
-		);
+		return this.roleService.update(role_id, body);
 	}
 
-	@Delete(':roleId')
-	async delete(@Param('roleId') roleId: string) {
-		return this.dbService.run('DELETE FROM roles WHERE id = ?', [roleId]);
+	@Delete(':role_id')
+	async delete(@Param('role_id') role_id: string) {
+		return this.roleService.delete(role_id);
 	}
 }

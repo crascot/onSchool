@@ -43,7 +43,8 @@
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
 		"strict": true,
-		"strictFunctionTypes": true
+		"strictFunctionTypes": true,
+		"strictPropertyInitialization": false
 	},
 
 	"include": ["src/**/*", "database/migrations/**/*"]
