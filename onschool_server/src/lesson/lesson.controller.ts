@@ -24,6 +24,19 @@ export class LessonController {
 		return this.lessonService.getLesson(lesson_id);
 	}
 
+	@Get('date/:date')
+	async getLessonByDate(@Param('date') date: string) {
+		return this.lessonService.getLessonByDate(date);
+	}
+
+	@Get('class/:class_id/date/:date')
+	async getLessonByClassAndDate(
+		@Param('class_id') class_id: string,
+		@Param('date') date: string
+	) {
+		return this.lessonService.getLessonByClassAndDate(class_id, date);
+	}
+
 	@Post()
 	async create(@Body() body: CreateLessonDto) {
 		return this.lessonService.create(body);

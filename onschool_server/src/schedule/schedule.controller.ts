@@ -23,6 +23,12 @@ export class ScheduleController {
 	async getSchedule(@Param('schedule_id') schedule_id: string) {
 		return this.scheduleService.getSchedule(schedule_id);
 	}
+
+	@Get('/class/:class_id')
+	async getScheduleByClassId(@Param('class_id') class_id: string) {
+		return this.scheduleService.getScheduleByClassId(class_id);
+	}
+
 	@Post()
 	async create(@Body() body: CreateScheduleDto) {
 		return this.scheduleService.create(body);
@@ -30,7 +36,7 @@ export class ScheduleController {
 	@Put(':schedule_id')
 	async update(
 		@Param('schedule_id') schedule_id: string,
-		body: CreateScheduleDto
+		@Body() body: CreateScheduleDto
 	) {
 		return this.scheduleService.update(schedule_id, body);
 	}
