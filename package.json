@@ -1,0 +1,21 @@
+{
+  "name": "onschool",
+  "version": "1.0.0",
+  "scripts": {
+    "precommit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "onschool_server/**/*.{js,ts}": [
+      "eslint --fix --ext .js,.ts --ignore-path .gitignore"
+    ]
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "devDependencies": {
+    "lint-staged": "^12.0.0",
+    "simple-git-hooks": "^3.0.0",
+    "eslint": "^7.0.0",
+    "prettier": "^2.0.0"
+  }
+}
