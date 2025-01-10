@@ -70,5 +70,16 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix --ext .js,.ts --ignore-path .gitignore"
+    ],
+    "*.json": [
+      "prettier --write"
+    ]
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
   }
 }
