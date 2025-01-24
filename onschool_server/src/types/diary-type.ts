@@ -1,7 +1,7 @@
-import { Student } from './user-type';
+import { UserType } from './user-type';
 
 export type DiaryType = {
 	id: number;
 	// student_id: number;
-	student: Student;
+	student: UserType;
 };

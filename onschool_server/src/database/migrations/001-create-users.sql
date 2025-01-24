@@ -8,23 +8,38 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS admin_details (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  created_at TEXT NOT NULL,
+	last_login TEXT NOT NULL,
+	phone TEXT NOT NULL UNIQUE,
   user_id INTEGER NOT NULL UNIQUE,
   FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
 CREATE TABLE IF NOT EXISTS teacher_details (
-  user_id INTEGER NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  subject_specialization TEXT NOT NULL, -- специализация (Математика, Физика)
+  experience_years  INTEGER NOT NULL,   -- опыт работы
+  qualification TEXT NOT NULL,          -- квалификация (бакалавр, магистрант)
+  employment_date TEXT NOT NULL,        -- дата регистрации
+  salary INTEGER NOT NULL,
+  user_id INTEGER NOT NULL UNIQUE,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS parent_details (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   balance INTEGER DEFAULT 0,
-  user_id INTEGER NOT NULL,
+  address TEXT NOT NULL,
+  relationship TEXT NOT NULL,           -- связь с учеником (мать, отец)
+  emergency_contact TEXT NOT NULL,      -- контакт с родителем
+  user_id INTEGER NOT NULL UNIQUE,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS student_details (
-  user_id INTEGER NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL UNIQUE,
   class_id INTEGER NOT NULL UNIQUE,
   parent_id INTEGER NOT NULL,
   diary_id INTEGER NOT NULL UNIQUE,

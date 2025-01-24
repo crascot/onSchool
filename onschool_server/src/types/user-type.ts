@@ -2,34 +2,32 @@ import { ClassType } from './class-type';
 import { DiaryType } from './diary-type';
 import { RoleType } from './role-type';
 
-type UserType = {
+export type UserType = {
 	id: number;
 	name: string;
 	email: string;
 	password: string;
 	role: RoleType;
-	// role_id: number;
+	details?: UserDetailsType;
 };
 
-export interface AdminType extends UserType {
-	user_id: number;
-}
+export type UserDetailsType = {
+	created_at?: string;
+	last_login?: string;
+	phone?: string;
 
-export interface TeacherType extends UserType {
-	user_id: number;
-}
+	subject_specialization?: string;
+	experience_years?: number;
+	qualification?: string;
+	employment_date?: string;
+	salary?: number;
 
-export interface ParentType extends UserType {
-	balance: number;
-	user_id: number;
-}
+	balance?: number;
+	address?: string;
+	relationship?: string;
+	emergency_contact?: string;
 
-export interface Student extends UserType {
-	user_id: number;
-	class: ClassType;
-	// class_id: number;
-	parent: ParentType;
-	// parent_id: number;
-	diary: DiaryType;
-	// diary_id: number;
-}
+	class?: ClassType;
+	parent?: UserType;
+	diary?: DiaryType;
+};

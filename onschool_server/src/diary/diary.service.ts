@@ -18,12 +18,22 @@ export class DiaryService {
 		if (!result) {
 			throw new NotFoundException({ message: 'diary not found' });
 		}
+
+		return result[0];
 	}
 
 	async create(body: CreateDiaryDto) {
 		const { student_id } = body;
 		return this.dbService.run(
 			`INSERT INTO diaries (student_id) VALUES (?)`,
+			[student_id]
+		);
+	}
+
+	async createAndReturnId(body: CreateDiaryDto) {
+		const { student_id } = body;
+		return this.dbService.query(
+			`INSERT INTO diaries (student_id) VALUES (?) RETURNING id`,
 			[student_id]
 		);
 	}

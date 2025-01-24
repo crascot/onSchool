@@ -7,10 +7,33 @@ import { TeacherService } from './teacher/teacher.service';
 import { TeacherModule } from './teacher/teacher.module';
 import { ParentModule } from './parent/parent.module';
 import { StudentModule } from './student/student.module';
+import { AdminService } from './admin/admin.service';
+import { ParentService } from './parent/parent.service';
+import { StudentService } from './student/student.service';
+import { DiaryModule } from 'diary/diary.module';
+import { DiaryService } from 'diary/diary.service';
+import { ClassModule } from 'CLASS/class.module';
+import { ClassService } from 'CLASS/class.service';
 
 @Module({
-	imports: [DatabaseModule, AdminModule, TeacherModule, ParentModule, StudentModule],
+	imports: [
+		DatabaseModule,
+		AdminModule,
+		TeacherModule,
+		ParentModule,
+		StudentModule,
+		DiaryModule,
+		ClassModule,
+	],
 	controllers: [UserController],
-	providers: [UserService, TeacherService],
+	providers: [
+		UserService,
+		AdminService,
+		TeacherService,
+		ParentService,
+		StudentService,
+		DiaryService,
+		ClassService,
+	],
 })
 export class UserModule {}

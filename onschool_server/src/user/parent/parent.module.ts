@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ParentController } from './parent.controller';
 import { ParentService } from './parent.service';
+import { DatabaseModule } from 'DATABASE/database.module';
 
 @Module({
-  controllers: [ParentController],
-  providers: [ParentService]
+	imports: [DatabaseModule],
+	providers: [ParentService],
 })
 export class ParentModule {}
