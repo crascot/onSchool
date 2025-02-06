@@ -9,6 +9,7 @@ import { GradeModule } from './grade/grade.module';
 import { ClassModule } from './class/class.module';
 import { AuthModule } from './auth/auth.module';
 import { ScheduleModule } from './schedule/schedule.module';
+import { SchoolModule } from './school/school.module';
 
 @Module({
 	imports: [
@@ -24,6 +25,7 @@ import { ScheduleModule } from './schedule/schedule.module';
 		ClassModule,
 		AuthModule,
 		ScheduleModule,
+		SchoolModule,
 	],
 })
 export class AppModule {}

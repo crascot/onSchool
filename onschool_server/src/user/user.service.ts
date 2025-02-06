@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user-dto';
 import { UpdateUserDto } from './dto/update-user-dto';
 import { DatabaseService } from 'DATABASE/database.service';
@@ -45,14 +45,13 @@ export class UserService {
 				parent_details.relationship AS details_relationship,
 				parent_details.emergency_contact AS details_emergency_contact,
 				student_details.class_id AS details_class_id,
-				student_details.parent_id AS details_parent_id,
-				student_details.diary_id AS details_diary_id
+				student_details.parent_id AS details_parent_id
 			FROM users
-    		JOIN roles ON users.role_id = roles.id
-    		LEFT JOIN admin_details ON users.id = admin_details.user_id
-			LEFT JOIN teacher_details ON users.id = teacher_details.user_id
-    		LEFT JOIN parent_details ON users.id = parent_details.user_id
-    		LEFT JOIN student_details ON users.id = student_details.user_id`
+				JOIN roles ON users.role_id = roles.id
+				LEFT JOIN admin_details ON users.id = admin_details.user_id
+				LEFT JOIN teacher_details ON users.id = teacher_details.user_id
+				LEFT JOIN parent_details ON users.id = parent_details.user_id
+				LEFT JOIN student_details ON users.id = student_details.user_id`
 		);
 
 		return TransformUsers.transform(users);
@@ -105,6 +104,21 @@ export class UserService {
 					[user_id]
 				);
 				return adminDetails[0];
+			case 2:
+				const teacherDetails = await this.dbService.query(
+					`SELECT
+						subject_specialization AS details_subject_specialization,
+						experience_years AS details_experience_years,
+						qualification  AS details_qualification,
+						employment_date AS details_employment_date,
+						salary AS details_salary,
+					FROM
+						teacher_details
+					WHERE
+						user_id = ?`,
+					[user_id]
+				);
+				return teacherDetails[0];
 			case 3:
 				const parentDetails = await this.dbService.query(
 					`SELECT balance AS details_balance
@@ -113,6 +127,18 @@ export class UserService {
 					[user_id]
 				);
 				return parentDetails[0];
+			case 4:
+				const studentDetails = await this.dbService.query(
+					`SELECT
+						class_id AS details_class_id,
+						parent_id AS details_parent_id
+					FROM
+						student_details
+					WHERE
+						user_id = ?`,
+					[user_id]
+				);
+				return studentDetails[0];
 			default:
 				return {};
 		}
@@ -192,14 +218,12 @@ export class UserService {
 							student_id: userId,
 						});
 
-					const diaryId = diaryResult[0].id;
-
 					const parentResult = await this.getOne(details.parent_id);
 					const classResult = await this.classService.getClass(
 						details.class_id
 					);
 
-					if (!diaryId) {
+					if (!diaryResult) {
 						throw new Error('Diary not created');
 					}
 
@@ -214,8 +238,7 @@ export class UserService {
 					await this.studentService.create(
 						userId,
 						details.class_id,
-						parentResult.id,
-						diaryId
+						parentResult.id
 					);
 					break;
 				default:

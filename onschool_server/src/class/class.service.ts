@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from 'DATABASE/database.service';
 import { ClassType } from 'types/class-type';
+import { CreateClassDto } from './dto/create-class-dto';
 
 @Injectable()
 export class ClassService {
@@ -22,24 +23,20 @@ export class ClassService {
 		return result[0];
 	}
 
-	async create(body: { name: string }) {
-		const { name } = body;
-		return this.dbService.run(`INSERT INTO classes (name) VALUES (?)`, [
-			name,
-		]);
+	async create(body: CreateClassDto) {
+		const { name, school_id } = body;
+		return this.dbService.run(
+			`INSERT INTO classes (name, school_id) VALUES (?, ?)`,
+			[name, school_id]
+		);
 	}
 
-	async update(
-		class_id: string,
-		body: {
-			name: string;
-		}
-	) {
-		const { name } = body;
-		return this.dbService.run('UPDATE classes SET name = ? WHERE id = ?', [
-			name,
-			class_id,
-		]);
+	async update(class_id: string, body: CreateClassDto) {
+		const { name, school_id } = body;
+		return this.dbService.run(
+			'UPDATE classes SET name = ?, school_id = ? WHERE id = ?',
+			[name, school_id, class_id]
+		);
 	}
 
 	async delete(class_id: string) {

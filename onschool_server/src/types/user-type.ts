@@ -1,33 +1,72 @@
 import { ClassType } from './class-type';
-import { DiaryType } from './diary-type';
 import { RoleType } from './role-type';
 
-export type UserType = {
+type UserBaseType = {
 	id: number;
 	name: string;
 	email: string;
 	password: string;
 	role: RoleType;
-	details?: UserDetailsType;
 };
 
-export type UserDetailsType = {
-	created_at?: string;
-	last_login?: string;
-	phone?: string;
+export type UserType = UserBaseType & {
+	details: UserDetailsType;
+};
 
-	subject_specialization?: string;
-	experience_years?: number;
-	qualification?: string;
-	employment_date?: string;
-	salary?: number;
+export type InputUserType = InputDetailsType & {
+	users_id: number;
+	name: string;
+	email: string;
+	password: string;
+	role_id: number;
+	roles_name: string;
+	roles_description: string;
+};
 
-	balance?: number;
-	address?: string;
-	relationship?: string;
-	emergency_contact?: string;
+export type InputDetailsType = {
+	details_created_at?: string;
+	details_last_login?: string;
+	details_phone?: string;
+	details_experience_years?: number;
+	details_qualification?: string;
+	details_employment_date?: string;
+	details_salary?: number;
+	details_balance?: number;
+	details_address?: string;
+	details_relationship?: string;
+	details_emergency_contact?: string;
+	details_class_id?: string;
+	details_parent_id?: string;
+};
 
-	class?: ClassType;
-	parent?: UserType;
-	diary?: DiaryType;
+export type UserDetailsType =
+	| AdminDetailsType
+	| TeacherDetailsType
+	| ParentDetailsType
+	| StudentDetailsType;
+
+export type AdminDetailsType = {
+	created_at: string;
+	last_login: string;
+	phone: string;
+};
+
+export type TeacherDetailsType = {
+	subject_specialization: string;
+	experience_years: number;
+	qualification: string;
+	employment_date: string;
+	salary: number;
+};
+
+export type ParentDetailsType = {
+	balance: number;
+	address: string;
+	relationship: string;
+	emergency_contact: string;
+};
+
+export type StudentDetailsType = {
+	class: ClassType;
+	parent: UserType;
 };

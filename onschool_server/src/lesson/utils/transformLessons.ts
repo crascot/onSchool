@@ -1,4 +1,5 @@
 import { LessonType } from 'types/lesson-type';
+import { SchoolType } from 'types/school-type';
 
 type InputLessonType = {
 	lessons_id: number;
@@ -11,6 +12,7 @@ type InputLessonType = {
 	day_of_week: string;
 	class_id: number;
 	class_name: string;
+	class_school: SchoolType;
 };
 
 export class TransformLessons {
@@ -32,6 +34,7 @@ export class TransformLessons {
 					class: {
 						id: e.class_id,
 						name: e.class_name,
+						school: e.class_school,
 					},
 					day_of_week: e.day_of_week,
 				},
@@ -49,6 +52,7 @@ export class TransformLessons {
 					class: {
 						id: data.class_id,
 						name: data.class_name,
+						school: data.class_school,
 					},
 					day_of_week: data.day_of_week,
 				},

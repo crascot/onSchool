@@ -1,10 +1,12 @@
 import { ScheduleType } from 'types/schedule-type';
+import { SchoolType } from 'types/school-type';
 
 type InputScheduleType = {
 	schedule_id: number;
 	day_of_week: string;
 	class_id: number;
 	class_name: string;
+	class_school: SchoolType;
 };
 
 export class TransformSchedule {
@@ -20,6 +22,7 @@ export class TransformSchedule {
 				class: {
 					id: e.class_id,
 					name: e.class_name,
+					school: e.class_school,
 				},
 			}));
 		} else {
@@ -29,6 +32,7 @@ export class TransformSchedule {
 				class: {
 					id: data.class_id,
 					name: data.class_name,
+					school: data.class_school,
 				},
 			};
 		}

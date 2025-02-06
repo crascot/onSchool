@@ -5,8 +5,6 @@ export class CreateUserDto {
 	role_id: number;
 	details: {
 		user_id: string;
-		created_at?: string;
-		last_login?: string;
 		phone?: string;
 
 		subject_specialization?: string;

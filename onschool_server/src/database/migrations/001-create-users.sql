@@ -13,7 +13,9 @@ CREATE TABLE IF NOT EXISTS admin_details (
 	last_login TEXT NOT NULL,
 	phone TEXT NOT NULL UNIQUE,
   user_id INTEGER NOT NULL UNIQUE,
-  FOREIGN KEY (user_id) REFERENCES users (id)
+  school_id INTEGER NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users (id),
+  FOREIGN KEY (school_id) REFERENCES schools(id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS teacher_details (
@@ -40,11 +42,9 @@ CREATE TABLE IF NOT EXISTS parent_details (
 CREATE TABLE IF NOT EXISTS student_details (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   user_id INTEGER NOT NULL UNIQUE,
-  class_id INTEGER NOT NULL UNIQUE,
+  class_id INTEGER NOT NULL,
   parent_id INTEGER NOT NULL,
-  diary_id INTEGER NOT NULL UNIQUE,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
   FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE,
-  FOREIGN KEY (parent_id) REFERENCES parent_details(id),
-  FOREIGN KEY (diary_id) REFERENCES diaries(id) ON DELETE CASCADE
+  FOREIGN KEY (parent_id) REFERENCES parent_details(id)
 );

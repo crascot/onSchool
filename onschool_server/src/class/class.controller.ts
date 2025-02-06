@@ -8,6 +8,7 @@ import {
 	Put,
 } from '@nestjs/common';
 import { ClassService } from './class.service';
+import { CreateClassDto } from './dto/create-class-dto';
 
 @Controller('class')
 export class ClassController {
@@ -24,14 +25,14 @@ export class ClassController {
 	}
 
 	@Post()
-	async create(@Body() body: { name: string }) {
+	async create(@Body() body: CreateClassDto) {
 		return this.classService.create(body);
 	}
 
 	@Put(':class_id')
 	async update(
 		@Param('class_id') class_id: string,
-		@Body() body: { name: string }
+		@Body() body: CreateClassDto
 	) {
 		return this.classService.update(class_id, body);
 	}
