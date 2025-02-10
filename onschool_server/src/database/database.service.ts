@@ -19,6 +19,21 @@ export class DatabaseService implements OnModuleInit {
 					console.error('Error opening database:', err.message);
 				} else {
 					console.log('Connected to SQLite database.');
+
+					this.db?.run(
+						'PRAGMA foreign_keys = ON;',
+						(err: Error | null) => {
+							if (err) {
+								console.error(
+									'Error enabling foreign keys:',
+									err.message
+								);
+							} else {
+								console.log('Foreign keys are enabled.');
+							}
+						}
+					);
+
 					this.runMigrations();
 				}
 			}
@@ -27,7 +42,7 @@ export class DatabaseService implements OnModuleInit {
 
 	private runMigrations(): void {
 		if (!this.db) {
-			throw Error('DataBase Error');
+			throw Error('Database Error');
 		}
 
 		const migrationsPath = join(__dirname, './migrations');

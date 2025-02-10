@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS admin_details (
 	last_login TEXT NOT NULL,
 	phone TEXT NOT NULL UNIQUE,
   user_id INTEGER NOT NULL UNIQUE,
-  school_id INTEGER NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES users (id),
+  school_id INTEGER,
+  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
   FOREIGN KEY (school_id) REFERENCES schools(id) ON DELETE SET NULL
 );
 

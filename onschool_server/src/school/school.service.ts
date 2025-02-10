@@ -15,8 +15,7 @@ export class SchoolService {
 				schools.status,
 				schools.address,
 				schools.created_at,
-				schools.updated_at,
-                schools.principal_id
+				schools.updated_at
 			FROM
 				schools
 			`
@@ -27,17 +26,16 @@ export class SchoolService {
 	}
 
 	async create(body: CreateSchoolDto) {
-		const { name, status, address, principal_id } = body;
+		const { name, status, address } = body;
 
 		return this.dbService.run(
-			`INSERT INTO schools (name, status, address, created_at, updated_at, principal_id) VALUES (?, ?, ?, ?, ?, ?)`,
+			`INSERT INTO schools (name, status, address, created_at, updated_at) VALUES (?, ?, ?, ?, ?)`,
 			[
 				name,
 				status,
 				address,
 				new Date().toISOString(),
 				new Date().toISOString(),
-				principal_id,
 			]
 		);
 	}
