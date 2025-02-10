@@ -26,6 +26,15 @@ export class UserService {
 		private readonly studentService: StudentService
 	) {}
 
+	async findByName(username: string) {
+		const result = await this.dbService.query(
+			'SELECT * FROM users WHERE users.name = ?',
+			[username]
+		);
+
+		return result[0];
+	}
+
 	async createUserAndReturnId(body: CreateUserBase): Promise<number> {
 		const { name, email, password, role_id } = body;
 

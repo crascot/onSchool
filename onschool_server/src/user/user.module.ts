@@ -35,5 +35,6 @@ import { ClassService } from 'CLASS/class.service';
 		DiaryService,
 		ClassService,
 	],
+	exports: [UserService],
 })
 export class UserModule {}

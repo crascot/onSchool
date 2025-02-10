@@ -10,6 +10,8 @@ import { ClassModule } from './class/class.module';
 import { AuthModule } from './auth/auth.module';
 import { ScheduleModule } from './schedule/schedule.module';
 import { SchoolModule } from './school/school.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from 'ROLE/role.guard';
 
 @Module({
 	imports: [
@@ -26,6 +28,12 @@ import { SchoolModule } from './school/school.module';
 		AuthModule,
 		ScheduleModule,
 		SchoolModule,
+	],
+	providers: [
+		{
+			provide: APP_GUARD,
+			useClass: RolesGuard,
+		},
 	],
 })
 export class AppModule {}

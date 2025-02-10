@@ -2,7 +2,7 @@ import { ClassType } from './class-type';
 import { RoleType } from './role-type';
 import { SchoolType } from './school-type';
 
-type UserBaseType = {
+export type UserBaseType = {
 	id: number;
 	name: string;
 	email: string;
