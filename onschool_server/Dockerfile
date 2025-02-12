@@ -20,9 +20,6 @@ COPY --chown=node:node . .
 
 RUN npm run build
 
-# ARG NODE_ENV=production
-# ENV NODE_ENV=${NODE_ENV}
-
 ENV NODE_ENV production
 
 RUN npm ci --only=production && npm cache clean --force
