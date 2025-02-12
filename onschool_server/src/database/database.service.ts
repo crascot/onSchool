@@ -12,9 +12,11 @@ export class DatabaseService implements OnModuleInit {
 	}
 
 	async init(): Promise<void> {
-		const dbPath =
-			process.env.DATABASE_URL?.replace('sqlite://', '') ||
-			'database.sqlite';
+		const dbPath = process.env.DATABASE_URL?.replace('sqlite://', '');
+
+		if (!dbPath) {
+			throw new Error('Database file not found');
+		}
 
 		this.db = new (verbose().Database)(dbPath, (err: Error | null) => {
 			if (err) {
