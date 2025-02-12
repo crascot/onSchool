@@ -1,30 +1,37 @@
-# 1. Устанавливаем зависимости в dev-окружении
-FROM node:20-alpine AS development
+FROM node:20-alpine As development
+
 WORKDIR /usr/app
 
-COPY package*.json ./
+COPY --chown=node:node package*.json ./
+
 RUN npm ci
 
-COPY . .
+RUN npm install -g @nestjs/cli
 
-# 2. Сборка приложения
-FROM node:20-alpine AS build
+USER node
+
+FROM node:18-alpine As build
+
 WORKDIR /usr/app
 
-COPY --from=development /usr/app/node_modules ./node_modules
-COPY . .
+COPY --chown=node:node package*.json ./
+COPY --chown=node:node --from=development /usr/app/node_modules ./node_modules
+COPY --chown=node:node . .
 
 RUN npm run build
+
+# ARG NODE_ENV=production
+# ENV NODE_ENV=${NODE_ENV}
+
 ENV NODE_ENV production
+
 RUN npm ci --only=production && npm cache clean --force
 
-FROM node:20-alpine AS production
-WORKDIR /usr/app
+USER node
 
-COPY --from=build /usr/app/node_modules ./node_modules
-COPY --from=build /usr/app/dist ./dist
-COPY --from=build /usr/app/package.json ./package.json
+FROM node:20-alpine As production
 
-ENV NODE_ENV=production
+COPY --chown=node:node --from=build /usr/app/node_modules ./node_modules
+COPY --chown=node:node --from=build /usr/app/dist ./dist
 
-CMD ["node", "dist/main.js"]
+CMD [ "node", "dist/main.js" ]

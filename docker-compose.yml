@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  onschool_server:
+    build:
+      context: ./onschool_server
+      dockerfile: Dockerfile
+    ports:
+      - "${PORT:-3000}:${PORT:-3000}"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+    env_file:
+      - ./onschool_server/.${NODE_ENV:-development}.env
+
+    volumes:
+      - ./onschool_server/dev.sqlite:/usr/app/dev.sqlite
+      - ./onschool_server/prod.sqlite:/usr/app/prod.sqlite
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - onschool_server

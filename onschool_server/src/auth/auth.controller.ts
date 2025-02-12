@@ -4,15 +4,12 @@ import {
 	Get,
 	HttpCode,
 	HttpStatus,
-	NotFoundException,
 	Post,
-	UnauthorizedException,
 	UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { UserBaseType } from 'types/user-type';
 import { JwtService } from '@nestjs/jwt';
-import { AuthGuard } from './auth.guard';
+import { JwtAuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -23,27 +20,18 @@ export class AuthController {
 
 	@HttpCode(HttpStatus.OK)
 	@Post('/login')
-	async signIn(@Body() body: { username: string; password: string }) {
-		const { username, password } = body;
-
-		const user: UserBaseType = await this.authService.signIn(username);
+	async login(@Body() body: { email: string; password: string }) {
+		const { email, password } = body;
+		const user = await this.authService.validateUser(email, password);
 
 		if (!user) {
-			throw new NotFoundException('User not found');
+			throw new Error('Invalid credentials');
 		}
 
-		if (user.password !== password) {
-			throw new UnauthorizedException();
-		}
-
-		const payload = { sub: user.id, username: user.name };
-
-		return {
-			access_token: await this.jwtService.signAsync(payload),
-		};
+		return this.authService.login(user);
 	}
 
-	@UseGuards(AuthGuard)
+	@UseGuards(JwtAuthGuard)
 	@Get('/test')
 	async test() {
 		return 'test';

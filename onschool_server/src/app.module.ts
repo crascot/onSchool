@@ -12,11 +12,14 @@ import { ScheduleModule } from './schedule/schedule.module';
 import { SchoolModule } from './school/school.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from 'ROLE/role.guard';
+import configuration from 'config/configuration';
 
 @Module({
 	imports: [
 		ConfigModule.forRoot({
-			envFilePath: `.env`,
+			load: [configuration],
+			envFilePath: `.${process.env.NODE_ENV}.env`,
+			isGlobal: true,
 		}),
 		UserModule,
 		RoleModule,

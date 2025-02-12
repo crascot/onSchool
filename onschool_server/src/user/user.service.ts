@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt';
 import {
 	BadRequestException,
 	Injectable,
@@ -26,10 +27,10 @@ export class UserService {
 		private readonly studentService: StudentService
 	) {}
 
-	async findByName(username: string) {
+	async findByEmail(email: string) {
 		const result = await this.dbService.query(
-			'SELECT * FROM users WHERE users.name = ?',
-			[username]
+			'SELECT * FROM users WHERE users.email = ?',
+			[email]
 		);
 
 		return result[0];
@@ -38,9 +39,12 @@ export class UserService {
 	async createUserAndReturnId(body: CreateUserBase): Promise<number> {
 		const { name, email, password, role_id } = body;
 
+		const salt = await bcrypt.genSalt(10);
+		const hashedPassword = await bcrypt.hash(password, salt);
+
 		const userResult = await this.dbService.query(
 			`INSERT INTO users (name, email, password, role_id) VALUES (?, ?, ?, ?) RETURNING id`,
-			[name, email, password, role_id]
+			[name, email, hashedPassword, role_id]
 		);
 
 		if (!userResult) {

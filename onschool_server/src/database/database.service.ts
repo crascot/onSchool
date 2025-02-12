@@ -12,32 +12,33 @@ export class DatabaseService implements OnModuleInit {
 	}
 
 	async init(): Promise<void> {
-		this.db = new (verbose().Database)(
-			'database.sqlite',
-			(err: Error | null) => {
-				if (err) {
-					console.error('Error opening database:', err.message);
-				} else {
-					console.log('Connected to SQLite database.');
+		const dbPath =
+			process.env.DATABASE_URL?.replace('sqlite://', '') ||
+			'database.sqlite';
 
-					this.db?.run(
-						'PRAGMA foreign_keys = ON;',
-						(err: Error | null) => {
-							if (err) {
-								console.error(
-									'Error enabling foreign keys:',
-									err.message
-								);
-							} else {
-								console.log('Foreign keys are enabled.');
-							}
+		this.db = new (verbose().Database)(dbPath, (err: Error | null) => {
+			if (err) {
+				console.error('Error opening database:', err.message);
+			} else {
+				console.log(`Connected to SQLite database: ${dbPath}`);
+
+				this.db?.run(
+					'PRAGMA foreign_keys = ON;',
+					(err: Error | null) => {
+						if (err) {
+							console.error(
+								'Error enabling foreign keys:',
+								err.message
+							);
+						} else {
+							console.log('Foreign keys are enabled.');
 						}
-					);
+					}
+				);
 
-					this.runMigrations();
-				}
+				this.runMigrations();
 			}
-		);
+		});
 	}
 
 	private runMigrations(): void {
