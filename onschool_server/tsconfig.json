@@ -38,7 +38,9 @@
 			"DIARY": ["DIARY"],
 			"DIARY/*": ["DIARY/*"],
 			"GRADE": ["GRADE"],
-			"GRADE/*": ["GRADE/*"]
+			"GRADE/*": ["GRADE/*"],
+			"TYPES": ["types"],
+			"TYPES/*": ["types/*"]
 		},
 		"allowUnreachableCode": false,
 		"allowUnusedLabels": false,

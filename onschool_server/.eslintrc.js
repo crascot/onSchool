@@ -37,6 +37,7 @@ module.exports = {
           ["LESSON", "LESSON"],
           ["DIARY", "DIARY"],
           ["GRADE", "GRADE"],
+          ["TYPES", "TYPES"]
         ]
       }
     }

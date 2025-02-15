@@ -3,7 +3,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { Database, verbose } from 'sqlite3';
-import { RoleEnum } from 'types/role-type';
+import { RoleEnum } from 'TYPES/role-type';
 
 const INITIAL_ROLES: { name: RoleEnum; description: string }[] = [
 	{
