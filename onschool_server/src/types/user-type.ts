@@ -21,7 +21,7 @@ export type AdminDetailsType = {
 	created_at: string;
 	last_login: string;
 	phone: string;
-	school: SchoolType | null;
+	school?: SchoolType | null;
 };
 
 export type TeacherDetailsType = {

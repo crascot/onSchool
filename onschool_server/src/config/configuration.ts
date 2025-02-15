@@ -3,5 +3,6 @@ export default () => {
 	return {
 		port: process.env.PORT || 3000,
 		jwtSecret: process.env.JWT_SECRET,
+		database_url: process.env.DATABASE_URL,
 	};
 };

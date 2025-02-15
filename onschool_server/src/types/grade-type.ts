@@ -8,7 +8,5 @@ export type GradeType = {
 	grade: Grade;
 	message?: string;
 	diary: DiaryType;
-	// diary_id: number;
 	lesson: LessonType;
-	// lesson_id: number;
 };

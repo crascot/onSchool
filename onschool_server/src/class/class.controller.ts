@@ -9,6 +9,8 @@ import {
 } from '@nestjs/common';
 import { ClassService } from './class.service';
 import { CreateClassDto } from './dto/create-class-dto';
+import { Roles } from 'ROLE/role.decorator';
+import { RoleEnum } from 'types/role-type';
 
 @Controller('class')
 export class ClassController {
@@ -24,11 +26,13 @@ export class ClassController {
 		return this.classService.getClass(class_id);
 	}
 
+	@Roles(RoleEnum.ADMIN, RoleEnum.PRINCIPAL)
 	@Post()
 	async create(@Body() body: CreateClassDto) {
 		return this.classService.create(body);
 	}
 
+	@Roles(RoleEnum.ADMIN, RoleEnum.PRINCIPAL)
 	@Put(':class_id')
 	async update(
 		@Param('class_id') class_id: string,
@@ -37,6 +41,7 @@ export class ClassController {
 		return this.classService.update(class_id, body);
 	}
 
+	@Roles(RoleEnum.ADMIN, RoleEnum.PRINCIPAL)
 	@Delete(':class_id')
 	async delete(@Param('class_id') class_id: string) {
 		this.classService.delete(class_id);

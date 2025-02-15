@@ -7,12 +7,15 @@ export class GradeService {
 	constructor(private readonly dbService: DatabaseService) {}
 
 	async getAll() {
-		return this.dbService.query('SELECT * FROM grades');
+		const result = await this.dbService.query(`SELECT * FROM grades`);
+
+		return result;
 	}
 
-	async getGrade(grade_id: string) {
+	async getGrade(grade_id: number) {
 		const result = await this.dbService.query(
-			`SELECT * FROM grades WHERE id = ${grade_id}`
+			`SELECT * FROM grades WHERE id  = ?`,
+			[grade_id]
 		);
 
 		if (!result) {

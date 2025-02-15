@@ -21,7 +21,7 @@ export class GradeController {
 
 	@Get(':grade_id')
 	async getGrade(@Param('grade_id') grade_id: string) {
-		return this.gradeService.getGrade(grade_id);
+		return this.gradeService.getGrade(Number(grade_id));
 	}
 
 	@Post()

@@ -1,26 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from 'DATABASE/database.service';
 import { CreateRoleDto } from './dto/create-role-dto';
-import { RoleEnum } from 'types/role-type';
-
-const INITIAL_ROLES: { name: RoleEnum; description: string }[] = [
-	{
-		name: RoleEnum.ADMIN,
-		description: 'Admin',
-	},
-	{
-		name: RoleEnum.TEACHER,
-		description: 'Teacher',
-	},
-	{
-		name: RoleEnum.PARENT,
-		description: 'Parent',
-	},
-	{
-		name: RoleEnum.STUDENT,
-		description: 'Student',
-	},
-];
 
 @Injectable()
 export class RoleService {
@@ -42,24 +22,25 @@ export class RoleService {
 		return result[0];
 	}
 
+	async getByName(name: string): Promise<number> {
+		const result = await this.dbService.query(
+			'SELECT id FROM roles WHERE name = ?',
+			[name]
+		);
+
+		if (!result) {
+			throw new NotFoundException('Role not found');
+		}
+
+		return result[0].id;
+	}
+
 	async create(body: CreateRoleDto) {
 		const { name, description } = body;
 		return this.dbService.run(
 			'INSERT INTO roles (name, description) VALUES (?, ?)',
 			[name, description]
 		);
-	}
-
-	async createRolesFromJson() {
-		const values = INITIAL_ROLES.map(
-			(role: CreateRoleDto) => `('${role.name}', '${role.description}')`
-		).join(',\n');
-
-		await this.dbService.run(
-			`INSERT INTO roles (name, description) VALUES ${values}`
-		);
-
-		return { message: 'Roles initialized successfully' };
 	}
 
 	async update(role_id: string, body: CreateRoleDto) {

@@ -93,6 +93,15 @@ export class StudentService {
 			throw new NotFoundException({ message: 'User not found' });
 		}
 
+		const diaryResult = await this.dbService.query(
+			`INSERT INTO diaries (student_id) VALUES (?) RETURNING id`,
+			[studentResult[0].id]
+		);
+
+		if (!diaryResult) {
+			throw new NotFoundException('Diary not created');
+		}
+
 		return studentResult[0].id;
 	}
 }

@@ -1,22 +1,9 @@
-import {
-	Body,
-	Controller,
-	Get,
-	HttpCode,
-	HttpStatus,
-	Post,
-	UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { JwtService } from '@nestjs/jwt';
-import { JwtAuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
-	constructor(
-		private readonly authService: AuthService,
-		private jwtService: JwtService
-	) {}
+	constructor(private readonly authService: AuthService) {}
 
 	@HttpCode(HttpStatus.OK)
 	@Post('/login')
@@ -29,11 +16,5 @@ export class AuthController {
 		}
 
 		return this.authService.login(user);
-	}
-
-	@UseGuards(JwtAuthGuard)
-	@Get('/test')
-	async test() {
-		return 'test';
 	}
 }

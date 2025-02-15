@@ -1,10 +1,8 @@
 import {
-	BadRequestException,
 	Body,
 	Controller,
 	Delete,
 	Get,
-	NotFoundException,
 	Param,
 	Post,
 	Put,
@@ -16,17 +14,19 @@ import {
 	CreateParentDto,
 	CreateStudentDto,
 	CreateTeacherDto,
-	CreateUserBase,
+	CreateUserWithRole,
 } from './dto/create-user-dto';
 import { TeacherService } from './teacher/teacher.service';
 import { ParentService } from './parent/parent.service';
 import { StudentService } from './student/student.service';
+import { PrincipalService } from './principal/principal.service';
 
 @Controller('user')
 export class UserController {
 	constructor(
 		private readonly userService: UserService,
 		private readonly adminService: AdminService,
+		private readonly principalService: PrincipalService,
 		private readonly teacherService: TeacherService,
 		private readonly parentService: ParentService,
 		private readonly studentService: StudentService
@@ -45,6 +45,21 @@ export class UserController {
 	@Post('/admin')
 	async createAdmin(@Body() body: CreateAdminDto) {
 		return this.userService.createAdmin(body);
+	}
+
+	@Get('/principal')
+	async getAllPrincipal() {
+		return this.principalService.getAll();
+	}
+
+	@Get('/principal/:user_id')
+	async getOnePrincipal(@Param('user_id') user_id: string) {
+		return this.principalService.getOne(Number(user_id));
+	}
+
+	@Post('/principal')
+	async createPrincipal(@Body() body: CreateAdminDto) {
+		return this.userService.createPrincipal(body);
 	}
 
 	@Get('/teacher')
@@ -93,7 +108,7 @@ export class UserController {
 	@Put('/:user_id')
 	async updateUser(
 		@Param('user_id') user_id: string,
-		@Body() body: CreateUserBase
+		@Body() body: CreateUserWithRole
 	) {
 		return this.userService.updateUser(Number(user_id), body);
 	}

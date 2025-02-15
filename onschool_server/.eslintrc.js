@@ -28,8 +28,10 @@ module.exports = {
         extensions: ['.js', '.ts'],
         map: [
           ["DATABASE", "database"],
+          ["AUTH", "auth"],
           ["USER", "user"],
           ["ROLE", "role"],
+          ["SCHOOL", "school"],
           ["CLASS", "class"],
           ["SCHEDULE", "SCHEDULE"],
           ["LESSON", "LESSON"],

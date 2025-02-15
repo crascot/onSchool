@@ -29,11 +29,6 @@ export class RoleController {
 		return this.roleService.create(body);
 	}
 
-	@Post('/import')
-	async createRolesFromJson() {
-		return this.roleService.createRolesFromJson();
-	}
-
 	@Put(':role_id')
 	async update(
 		@Param('role_id') role_id: string,

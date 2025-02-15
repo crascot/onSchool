@@ -3,6 +3,7 @@ export enum RoleEnum {
 	TEACHER = 'TEACHER',
 	PARENT = 'PARENT',
 	STUDENT = 'STUDENT',
+	PRINCIPAL = 'PRINCIPAL',
 }
 
 export type RoleType = {

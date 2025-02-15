@@ -22,6 +22,7 @@ export class JwtAuthGuard implements CanActivate {
 			request.user = user;
 			return true;
 		} catch (error) {
+			console.log('JWT verification failed:', error);
 			return false;
 		}
 	}

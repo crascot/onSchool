@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from 'DATABASE/database.service';
-import { CreateTeacherDto, TeacherDetailsDto } from 'USER/dto/create-user-dto';
+import { TeacherDetailsDto } from 'USER/dto/create-user-dto';
 import { TransformTeacher } from './utils/transformTeacher';
 
 @Injectable()

@@ -2,20 +2,26 @@ export class CreateUserBase {
 	name: string;
 	email: string;
 	password: string;
+}
+
+export class CreateUserWithRole {
+	name: string;
+	email: string;
+	password: string;
 	role_id: number;
 }
 
 export class CreateAdminDto extends CreateUserBase {
 	details: {
 		phone: string;
-		school_id?: number;
+		school_id: number;
 	};
 }
 
 export class AdminDetailsDto {
 	user_id: number;
 	phone: string;
-	school_id?: number;
+	school_id: number;
 }
 
 export class CreateTeacherDto extends CreateUserBase {

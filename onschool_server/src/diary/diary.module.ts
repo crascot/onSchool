@@ -7,5 +7,6 @@ import { DatabaseModule } from 'DATABASE/database.module';
 	imports: [DatabaseModule],
 	controllers: [DiaryController],
 	providers: [DiaryService],
+	exports: [DiaryService],
 })
 export class DiaryModule {}

@@ -10,17 +10,20 @@ import {
 	CreateParentDto,
 	CreateStudentDto,
 	CreateTeacherDto,
-	CreateUserBase,
+	CreateUserWithRole,
 } from './dto/create-user-dto';
 import { AdminService } from './admin/admin.service';
 import { TeacherService } from './teacher/teacher.service';
 import { ParentService } from './parent/parent.service';
 import { StudentService } from './student/student.service';
+import { RoleService } from 'ROLE/role.service';
+import { RoleEnum } from 'types/role-type';
 
 @Injectable()
 export class UserService {
 	constructor(
 		private readonly dbService: DatabaseService,
+		private readonly roleService: RoleService,
 		private readonly adminService: AdminService,
 		private readonly teacherService: TeacherService,
 		private readonly parentService: ParentService,
@@ -29,14 +32,21 @@ export class UserService {
 
 	async findByEmail(email: string) {
 		const result = await this.dbService.query(
-			'SELECT * FROM users WHERE users.email = ?',
+			`SELECT
+				users.id AS id,
+				users.email,
+				users.password,
+				roles.name AS role
+			FROM users
+			JOIN roles ON users.role_id = roles.id
+			WHERE users.email = ?`,
 			[email]
 		);
 
-		return result[0];
+		return result.length ? result[0] : null;
 	}
 
-	async createUserAndReturnId(body: CreateUserBase): Promise<number> {
+	async createUserAndReturnId(body: CreateUserWithRole): Promise<number> {
 		const { name, email, password, role_id } = body;
 
 		const salt = await bcrypt.genSalt(10);
@@ -55,17 +65,19 @@ export class UserService {
 	}
 
 	async createAdmin(body: CreateAdminDto) {
-		const { name, email, password, role_id, details } = body;
+		const { name, email, password, details } = body;
 		const db = this.dbService;
 
 		try {
 			await db.run('BEGIN TRANSACTION');
 
+			const roleId = await this.roleService.getByName(RoleEnum.ADMIN);
+
 			const userId = await this.createUserAndReturnId({
 				name,
 				email,
 				password,
-				role_id,
+				role_id: roleId,
 			});
 
 			if (!userId) {
@@ -90,18 +102,58 @@ export class UserService {
 		}
 	}
 
-	async createTeacher(body: CreateTeacherDto) {
-		const { name, email, password, role_id, details } = body;
+	async createPrincipal(body: CreateAdminDto) {
+		const { name, email, password, details } = body;
 		const db = this.dbService;
 
 		try {
 			await db.run('BEGIN TRANSACTION');
 
+			const roleId = await this.roleService.getByName(RoleEnum.PRINCIPAL);
+
 			const userId = await this.createUserAndReturnId({
 				name,
 				email,
 				password,
-				role_id,
+				role_id: roleId,
+			});
+
+			if (!userId) {
+				throw new NotFoundException({ message: 'User not found' });
+			}
+
+			const principalId = await this.adminService.create({
+				user_id: userId,
+				...details,
+			});
+
+			if (!principalId) {
+				throw new BadRequestException('Admin creation failed');
+			}
+
+			await db.run('COMMIT');
+
+			return { message: 'Principal user created' };
+		} catch (error: any) {
+			await db.run('ROLLBACK');
+			console.log('ROLLBACK: ', error);
+		}
+	}
+
+	async createTeacher(body: CreateTeacherDto) {
+		const { name, email, password, details } = body;
+		const db = this.dbService;
+
+		try {
+			await db.run('BEGIN TRANSACTION');
+
+			const roleId = await this.roleService.getByName(RoleEnum.TEACHER);
+
+			const userId = await this.createUserAndReturnId({
+				name,
+				email,
+				password,
+				role_id: roleId,
 			});
 
 			if (!userId) {
@@ -127,17 +179,19 @@ export class UserService {
 	}
 
 	async createParent(body: CreateParentDto) {
-		const { name, email, password, role_id, details } = body;
+		const { name, email, password, details } = body;
 		const db = this.dbService;
 
 		try {
 			await db.run('BEGIN TRANSACTION');
 
+			const roleId = await this.roleService.getByName(RoleEnum.PARENT);
+
 			const userId = await this.createUserAndReturnId({
 				name,
 				email,
 				password,
-				role_id,
+				role_id: roleId,
 			});
 
 			if (!userId) {
@@ -163,17 +217,19 @@ export class UserService {
 	}
 
 	async createStudent(body: CreateStudentDto) {
-		const { name, email, password, role_id, details } = body;
+		const { name, email, password, details } = body;
 		const db = this.dbService;
 
 		try {
 			await db.run('BEGIN TRANSACTION');
 
+			const roleId = await this.roleService.getByName(RoleEnum.STUDENT);
+
 			const userId = await this.createUserAndReturnId({
 				name,
 				email,
 				password,
-				role_id,
+				role_id: roleId,
 			});
 
 			if (!userId) {
@@ -186,7 +242,7 @@ export class UserService {
 			});
 
 			if (!studentId) {
-				throw new BadRequestException('Teacher creation failed');
+				throw new BadRequestException('Student creation failed');
 			}
 
 			await db.run('COMMIT');
@@ -198,7 +254,7 @@ export class UserService {
 		}
 	}
 
-	async updateUser(user_id: number, body: CreateUserBase) {
+	async updateUser(user_id: number, body: CreateUserWithRole) {
 		const { name, email, password, role_id } = body;
 
 		await this.dbService.run(
