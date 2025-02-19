@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS admin_details (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  created_at TEXT NOT NULL,
-	last_login TEXT NOT NULL,
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+	last_login TEXT DEFAULT CURRENT_TIMESTAMP,
 	phone TEXT NOT NULL UNIQUE,
   user_id INTEGER NOT NULL UNIQUE,
   school_id INTEGER,
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS teacher_details (
   subject_specialization TEXT NOT NULL, -- специализация (Математика, Физика)
   experience_years  INTEGER NOT NULL,   -- опыт работы
   qualification TEXT NOT NULL,          -- квалификация (бакалавр, магистрант)
-  employment_date TEXT NOT NULL,        -- дата регистрации
+  employment_date TEXT DEFAULT CURRENT_TIMESTAMP,        -- дата регистрации
   salary INTEGER NOT NULL,
   user_id INTEGER NOT NULL UNIQUE,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE

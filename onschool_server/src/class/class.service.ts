@@ -1,23 +1,28 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from 'DATABASE/database.service';
 import { ClassType } from 'types/class-type';
 import { CreateClassDto } from './dto/create-class-dto';
 
 @Injectable()
 export class ClassService {
+	private readonly tableName: string = 'classes';
+
 	constructor(private readonly dbService: DatabaseService) {}
 
 	async getAll() {
-		return this.dbService.query('SELECT * FROM classes');
+		return this.dbService.query(`SELECT * FROM ${this.tableName}`);
 	}
 
-	async getClass(class_id: string) {
+	async getClass(class_id: number) {
 		const result: ClassType[] = await this.dbService.query(
-			`SELECT * FROM classes WHERE id = ${class_id}`
+			`SELECT * FROM ${this.tableName} WHERE id = ${class_id}`
 		);
 
-		if (!result) {
-			throw new NotFoundException({ message: 'class not found' });
+		if (result.length === 0) {
+			throw new NotFoundException({
+				code: HttpStatus.NOT_FOUND,
+				message: 'Class not found',
+			});
 		}
 
 		return result[0];
@@ -25,8 +30,9 @@ export class ClassService {
 
 	async create(body: CreateClassDto) {
 		const { name, school_id } = body;
+
 		return this.dbService.run(
-			`INSERT INTO classes (name, school_id) VALUES (?, ?)`,
+			`INSERT INTO ${this.tableName} (name, school_id) VALUES (?, ?)`,
 			[name, school_id]
 		);
 	}
@@ -34,14 +40,15 @@ export class ClassService {
 	async update(class_id: string, body: CreateClassDto) {
 		const { name, school_id } = body;
 		return this.dbService.run(
-			'UPDATE classes SET name = ?, school_id = ? WHERE id = ?',
+			`UPDATE ${this.tableName} SET name = ?, school_id = ? WHERE id = ?`,
 			[name, school_id, class_id]
 		);
 	}
 
 	async delete(class_id: string) {
-		return this.dbService.run('DELETE FROM classes WHERE id = ?', [
-			class_id,
-		]);
+		return this.dbService.run(
+			`DELETE FROM ${this.tableName} WHERE id = ?`,
+			[class_id]
+		);
 	}
 }

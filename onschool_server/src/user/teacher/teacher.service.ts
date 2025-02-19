@@ -77,9 +77,9 @@ export class TeacherService {
 		const result = await this.dbService.query(
 			`INSERT INTO
 				teacher_details
-				(user_id, subject_specialization, experience_years, qualification, employment_date, salary)
+				(user_id, subject_specialization, experience_years, qualification, salary)
 			VALUES
-				(?, ?, ?, ?, ?, ?)
+				(?, ?, ?, ?, ?)
 			RETURNING
 				id`,
 			[
@@ -87,7 +87,6 @@ export class TeacherService {
 				subject_specialization,
 				experience_years,
 				qualification,
-				new Date().toISOString(),
 				salary,
 			]
 		);

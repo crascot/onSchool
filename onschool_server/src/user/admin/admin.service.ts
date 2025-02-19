@@ -67,8 +67,8 @@ export class AdminService {
 		const { user_id, phone } = body;
 
 		const adminResult = await this.dbService.query(
-			`INSERT INTO admin_details (created_at, last_login, phone, user_id) VALUES (?, ?, ?, ?) RETURNING id`,
-			[new Date().toISOString(), new Date().toISOString(), phone, user_id]
+			`INSERT INTO admin_details (phone, user_id) VALUES (?, ?) RETURNING id`,
+			[phone, user_id]
 		);
 
 		if (!adminResult) {

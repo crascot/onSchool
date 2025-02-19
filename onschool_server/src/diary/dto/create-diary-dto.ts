@@ -1,3 +1,7 @@
+import { IsInt, IsNotEmpty } from 'class-validator';
+
 export class CreateDiaryDto {
-	student_id: string;
+	@IsInt()
+	@IsNotEmpty()
+	student_id: number;
 }

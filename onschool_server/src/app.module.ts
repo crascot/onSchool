@@ -10,6 +10,7 @@ import { DiaryModule } from 'diary/diary.module';
 import { GradeModule } from 'grade/grade.module';
 import { LessonModule } from 'lesson/lesson.module';
 import { ScheduleModule } from 'schedule/schedule.module';
+import { TaskModule } from './task/task.module';
 import configuration from 'config/configuration';
 
 @Module({
@@ -29,6 +30,7 @@ import configuration from 'config/configuration';
 		AuthModule,
 		ScheduleModule,
 		SchoolModule,
+		TaskModule,
 	],
 })
 export class AppModule {}

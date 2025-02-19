@@ -1,10 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from 'DATABASE/database.service';
 import { CreateLessonDto } from './dto/create-lesson-dto';
 import { TransformLessons } from './utils/transformLessons';
 
 @Injectable()
 export class LessonService {
+	private readonly tableName: string = 'lessons';
+
 	constructor(private readonly dbService: DatabaseService) {}
 
 	async getAll() {
@@ -22,7 +24,7 @@ export class LessonService {
 				classes.id AS class_id,
 				classes.name AS class_name
 			FROM
-				lessons
+				${this.tableName}
 			JOIN
 				schedule ON lessons.schedule_id = schedule.id
 			JOIN
@@ -33,7 +35,7 @@ export class LessonService {
 		return TransformLessons.transform(result);
 	}
 
-	async getLesson(lesson_id: string) {
+	async getLesson(lesson_id: number) {
 		const result = await this.dbService.query(
 			`
 			SELECT
@@ -48,7 +50,7 @@ export class LessonService {
 				classes.id AS class_id,
 				classes.name AS class_name
 			FROM
-				lessons
+				${this.tableName}
 			JOIN
 				schedule ON lessons.schedule_id = schedule.id
 			JOIN
@@ -59,8 +61,11 @@ export class LessonService {
 			[lesson_id]
 		);
 
-		if (!result) {
-			throw new NotFoundException({ message: 'lesson not found' });
+		if (result.length === 0) {
+			throw new NotFoundException({
+				code: HttpStatus.NOT_FOUND,
+				message: 'Lesson not found',
+			});
 		}
 
 		return TransformLessons.transform(result[0]);
@@ -81,7 +86,7 @@ export class LessonService {
 				classes.id AS class_id,
 				classes.name AS class_name
 			FROM
-				lessons
+				${this.tableName}
 			JOIN
 				schedule ON lessons.schedule_id = schedule.id
 			JOIN
@@ -92,10 +97,17 @@ export class LessonService {
 			[date]
 		);
 
+		if (result.length === 0) {
+			throw new NotFoundException({
+				code: HttpStatus.NOT_FOUND,
+				message: 'Lesson by date not found',
+			});
+		}
+
 		return TransformLessons.transform(result);
 	}
 
-	async getLessonByClassAndDate(class_id: string, date: string) {
+	async getLessonByClassAndDate(class_id: number, date: string) {
 		const result = await this.dbService.query(
 			`
 			SELECT
@@ -110,7 +122,7 @@ export class LessonService {
 				classes.id AS class_id,
 				classes.name AS class_name
 			FROM
-				lessons
+				${this.tableName}
 			JOIN
 				schedule ON lessons.schedule_id = schedule.id
 			JOIN
@@ -123,28 +135,36 @@ export class LessonService {
 			[class_id, date]
 		);
 
+		if (result.length === 0) {
+			throw new NotFoundException({
+				code: HttpStatus.NOT_FOUND,
+				message: 'Lesson by class and date not found',
+			});
+		}
+
 		return TransformLessons.transform(result);
 	}
 
 	async create(body: CreateLessonDto) {
 		const { subject, start_time, end_time, type, date, schedule_id } = body;
 		return this.dbService.run(
-			`INSERT INTO lessons (subject, start_time, end_time, type, date, schedule_id) VALUES (?, ?, ?, ?, ?, ?)`,
+			`INSERT INTO ${this.tableName} (subject, start_time, end_time, type, date, schedule_id) VALUES (?, ?, ?, ?, ?, ?)`,
 			[subject, start_time, end_time, type, date, schedule_id]
 		);
 	}
 
-	async update(lesson_id: string, body: CreateLessonDto) {
+	async update(lesson_id: number, body: CreateLessonDto) {
 		const { subject, start_time, end_time, type, date, schedule_id } = body;
 		return this.dbService.run(
-			'UPDATE lessons SET subject = ?, start_time = ?, end_time = ?, type = ?, date = ?, schedule_id WHERE id = ?',
+			`UPDATE ${this.tableName} SET subject = ?, start_time = ?, end_time = ?, type = ?, date = ?, schedule_id WHERE id = ?`,
 			[subject, start_time, end_time, type, date, schedule_id, lesson_id]
 		);
 	}
 
-	async delete(lesson_id: string) {
-		return this.dbService.run('DELETE FROM lessons WHERE id = ?', [
-			lesson_id,
-		]);
+	async delete(lesson_id: number) {
+		return this.dbService.run(
+			`DELETE FROM ${this.tableName} WHERE id = ?`,
+			[lesson_id]
+		);
 	}
 }

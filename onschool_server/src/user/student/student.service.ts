@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from 'DATABASE/database.service';
 import { StudentDetailsDto } from 'USER/dto/create-user-dto';
 import { TransformStudent } from './utils/transformStudent';
@@ -78,6 +78,13 @@ export class StudentService {
 		  `,
 			[user_id]
 		);
+
+		if (result.length === 0) {
+			throw new NotFoundException({
+				code: HttpStatus.NOT_FOUND,
+				message: 'Student not found',
+			});
+		}
 
 		return TransformStudent.transform(result[0]);
 	}

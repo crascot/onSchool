@@ -1,4 +1,11 @@
+import { IsNotEmpty, IsString } from 'class-validator';
+
 export class CreateRoleDto {
-	readonly name: string;
-	readonly description: string;
+	@IsString()
+	@IsNotEmpty()
+	name: string;
+
+	@IsString()
+	@IsNotEmpty()
+	description: string;
 }

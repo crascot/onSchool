@@ -1,6 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import {
 	BadRequestException,
+	HttpStatus,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
@@ -18,13 +19,17 @@ import { ParentService } from './parent/parent.service';
 import { StudentService } from './student/student.service';
 import { RoleService } from 'ROLE/role.service';
 import { RoleEnum } from 'types/role-type';
+import { PrincipalService } from './principal/principal.service';
 
 @Injectable()
 export class UserService {
+	private readonly tableName: string = 'users';
+
 	constructor(
 		private readonly dbService: DatabaseService,
 		private readonly roleService: RoleService,
 		private readonly adminService: AdminService,
+		private readonly principalService: PrincipalService,
 		private readonly teacherService: TeacherService,
 		private readonly parentService: ParentService,
 		private readonly studentService: StudentService
@@ -37,13 +42,23 @@ export class UserService {
 				users.email,
 				users.password,
 				roles.name AS role
-			FROM users
-			JOIN roles ON users.role_id = roles.id
-			WHERE users.email = ?`,
+			FROM
+				${this.tableName}
+			JOIN
+				roles ON users.role_id = roles.id
+			WHERE
+				users.email = ?`,
 			[email]
 		);
 
-		return result.length ? result[0] : null;
+		if (result.length === 0) {
+			throw new NotFoundException({
+				code: HttpStatus.NOT_FOUND,
+				message: 'User by email not found',
+			});
+		}
+
+		return result[0];
 	}
 
 	async createUserAndReturnId(body: CreateUserWithRole): Promise<number> {
@@ -53,12 +68,15 @@ export class UserService {
 		const hashedPassword = await bcrypt.hash(password, salt);
 
 		const userResult = await this.dbService.query(
-			`INSERT INTO users (name, email, password, role_id) VALUES (?, ?, ?, ?) RETURNING id`,
+			`INSERT INTO ${this.tableName} (name, email, password, role_id) VALUES (?, ?, ?, ?) RETURNING id`,
 			[name, email, hashedPassword, role_id]
 		);
 
-		if (!userResult) {
-			throw new NotFoundException({ message: 'User not found' });
+		if (userResult.length === 0) {
+			throw new NotFoundException({
+				code: HttpStatus.NOT_FOUND,
+				message: 'User not created',
+			});
 		}
 
 		return userResult[0].id;
@@ -81,7 +99,10 @@ export class UserService {
 			});
 
 			if (!userId) {
-				throw new NotFoundException({ message: 'User not found' });
+				throw new NotFoundException({
+					code: HttpStatus.NOT_FOUND,
+					message: 'User not found',
+				});
 			}
 
 			const adminId = await this.adminService.create({
@@ -90,12 +111,13 @@ export class UserService {
 			});
 
 			if (!adminId) {
-				throw new BadRequestException('Admin creation failed');
+				throw new BadRequestException({
+					code: HttpStatus.BAD_REQUEST,
+					message: 'Admin creation failed',
+				});
 			}
 
-			await db.run('COMMIT');
-
-			return { message: 'Admin user created' };
+			return db.run('COMMIT');
 		} catch (error: any) {
 			await db.run('ROLLBACK');
 			console.log('ROLLBACK: ', error);
@@ -119,21 +141,25 @@ export class UserService {
 			});
 
 			if (!userId) {
-				throw new NotFoundException({ message: 'User not found' });
+				throw new NotFoundException({
+					code: HttpStatus.NOT_FOUND,
+					message: 'User not created',
+				});
 			}
 
-			const principalId = await this.adminService.create({
+			const principalId = await this.principalService.create({
 				user_id: userId,
 				...details,
 			});
 
 			if (!principalId) {
-				throw new BadRequestException('Admin creation failed');
+				throw new BadRequestException({
+					code: HttpStatus.BAD_REQUEST,
+					message: 'Principal creation failed',
+				});
 			}
 
-			await db.run('COMMIT');
-
-			return { message: 'Principal user created' };
+			return db.run('COMMIT');
 		} catch (error: any) {
 			await db.run('ROLLBACK');
 			console.log('ROLLBACK: ', error);
@@ -157,7 +183,10 @@ export class UserService {
 			});
 
 			if (!userId) {
-				throw new NotFoundException({ message: 'User not found' });
+				throw new NotFoundException({
+					code: HttpStatus.NOT_FOUND,
+					message: 'User not found',
+				});
 			}
 
 			const teacherId = await this.teacherService.create({
@@ -166,12 +195,13 @@ export class UserService {
 			});
 
 			if (!teacherId) {
-				throw new BadRequestException('Teacher creation failed');
+				throw new BadRequestException({
+					code: HttpStatus.BAD_REQUEST,
+					message: 'Teacher creation failed',
+				});
 			}
 
-			await db.run('COMMIT');
-
-			return { message: 'Teacher user created' };
+			return db.run('COMMIT');
 		} catch (error: any) {
 			await db.run('ROLLBACK');
 			console.log('ROLLBACK: ', error);
@@ -195,7 +225,10 @@ export class UserService {
 			});
 
 			if (!userId) {
-				throw new NotFoundException({ message: 'User not found' });
+				throw new NotFoundException({
+					code: HttpStatus.NOT_FOUND,
+					message: 'User not found',
+				});
 			}
 
 			const parentId = await this.parentService.create({
@@ -204,12 +237,13 @@ export class UserService {
 			});
 
 			if (!parentId) {
-				throw new BadRequestException('Teacher creation failed');
+				throw new BadRequestException({
+					code: HttpStatus.BAD_REQUEST,
+					message: 'Teacher creation failed',
+				});
 			}
 
-			await db.run('COMMIT');
-
-			return { message: 'Parent user created' };
+			return db.run('COMMIT');
 		} catch (error: any) {
 			await db.run('ROLLBACK');
 			console.log('ROLLBACK: ', error);
@@ -233,7 +267,10 @@ export class UserService {
 			});
 
 			if (!userId) {
-				throw new NotFoundException({ message: 'User not found' });
+				throw new NotFoundException({
+					code: HttpStatus.NOT_FOUND,
+					message: 'User not found',
+				});
 			}
 
 			const studentId = await this.studentService.create({
@@ -242,12 +279,13 @@ export class UserService {
 			});
 
 			if (!studentId) {
-				throw new BadRequestException('Student creation failed');
+				throw new BadRequestException({
+					code: HttpStatus.BAD_REQUEST,
+					message: 'Student creation failed',
+				});
 			}
 
-			await db.run('COMMIT');
-
-			return { message: 'Student user created' };
+			return db.run('COMMIT');
 		} catch (error: any) {
 			await db.run('ROLLBACK');
 			console.log('ROLLBACK: ', error);
@@ -257,16 +295,16 @@ export class UserService {
 	async updateUser(user_id: number, body: CreateUserWithRole) {
 		const { name, email, password, role_id } = body;
 
-		await this.dbService.run(
-			'UPDATE users SET name = ?, email = ?, password = ?, role_id = ? WHERE id = ?',
+		return this.dbService.run(
+			`UPDATE ${this.tableName} SET name = ?, email = ?, password = ?, role_id = ? WHERE id = ?`,
 			[name, email, password, role_id, user_id]
 		);
-
-		return { message: 'User updated' };
 	}
 
 	async deleteUser(user_id: number) {
-		await this.dbService.run('DELETE FROM users WHERE id = ?', [user_id]);
-		return { message: 'User deleted' };
+		return this.dbService.run(
+			`DELETE FROM ${this.tableName} WHERE id = ?`,
+			[user_id]
+		);
 	}
 }
