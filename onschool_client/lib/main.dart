@@ -15,15 +15,13 @@ class OnSchoolApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: AppThemes.lightTheme,
       darkTheme: AppThemes.darkTheme,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -31,6 +29,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+
+  void _decrementCounter() {
+    setState(() {
+      _counter--;
+    });
+  }
+
+  void _resetCounter() {
+    setState(() {
+      _counter = 0;
+    });
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -42,8 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: const Text('OnSchool App'),
       ),
       body: Center(
         child: Column(
@@ -60,11 +69,26 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      persistentFooterButtons: [
+        FloatingActionButton(
+          onPressed: _decrementCounter,
+          tooltip: 'Decrement',
+          backgroundColor: Theme.of(context).secondaryHeaderColor,
+          child: const Icon(Icons.remove),
+        ),
+        FloatingActionButton(
+          onPressed: _resetCounter,
+          tooltip: 'Reset',
+          backgroundColor: Theme.of(context).secondaryHeaderColor,
+          child: const Icon(Icons.settings_backup_restore_rounded),
+        ),
+        FloatingActionButton(
+          onPressed: _incrementCounter,
+          tooltip: 'Increment',
+          backgroundColor: Theme.of(context).secondaryHeaderColor,
+          child: const Icon(Icons.add),
+        ),
+      ],
     );
   }
 }

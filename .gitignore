@@ -6,6 +6,12 @@
 node_modules
 
 # Client Flutter
+onschool_client/build/
+onschool_client/macos/Flutter/ephemeral/
+onschool_client/ios/Flutter/
+onschool_client/linux/flutter/
+onschool_client/web/.dart_tool/
+onschool_client/windows/flutter/
 onschool_client/*.class
 onschool_client/*.pyc
 onschool_client/*.swp

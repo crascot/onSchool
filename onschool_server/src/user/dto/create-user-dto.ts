@@ -46,6 +46,7 @@ class AdminDetails {
 export class CreateAdminDto extends CreateUserBase {
 	@ValidateNested()
 	@Type(() => AdminDetails)
+	@IsNotEmpty()
 	details: AdminDetails;
 }
 
@@ -84,6 +85,7 @@ class TeacherDetails {
 export class CreateTeacherDto extends CreateUserBase {
 	@ValidateNested()
 	@Type(() => TeacherDetails)
+	@IsNotEmpty()
 	details: TeacherDetails;
 }
 
@@ -130,6 +132,7 @@ class ParentDetails {
 export class CreateParentDto extends CreateUserBase {
 	@ValidateNested()
 	@Type(() => ParentDetails)
+	@IsNotEmpty()
 	details: ParentDetails;
 }
 
@@ -168,6 +171,7 @@ class StudentDetails {
 export class CreateStudentDto extends CreateUserBase {
 	@ValidateNested()
 	@Type(() => StudentDetails)
+	@IsNotEmpty()
 	details: StudentDetails;
 }
 

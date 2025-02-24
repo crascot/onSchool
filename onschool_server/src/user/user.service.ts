@@ -121,6 +121,7 @@ export class UserService {
 		} catch (error: any) {
 			await db.run('ROLLBACK');
 			console.log('ROLLBACK: ', error);
+			throw error;
 		}
 	}
 
@@ -163,6 +164,7 @@ export class UserService {
 		} catch (error: any) {
 			await db.run('ROLLBACK');
 			console.log('ROLLBACK: ', error);
+			throw error;
 		}
 	}
 
@@ -205,6 +207,7 @@ export class UserService {
 		} catch (error: any) {
 			await db.run('ROLLBACK');
 			console.log('ROLLBACK: ', error);
+			throw error;
 		}
 	}
 
@@ -247,6 +250,7 @@ export class UserService {
 		} catch (error: any) {
 			await db.run('ROLLBACK');
 			console.log('ROLLBACK: ', error);
+			throw error;
 		}
 	}
 
@@ -289,6 +293,7 @@ export class UserService {
 		} catch (error: any) {
 			await db.run('ROLLBACK');
 			console.log('ROLLBACK: ', error);
+			throw error;
 		}
 	}
 
