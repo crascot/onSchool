@@ -44,13 +44,18 @@ class AppColors {
 class AppTextThemes {
   static TextTheme lightTextTheme = const TextTheme(
     displayLarge: TextStyle(
-        fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
-    bodyLarge: TextStyle(fontSize: 16, color: Colors.black),
+        fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.black),
+    titleLarge: TextStyle(
+      fontSize: 48,
+      color: AppColors.black,
+    ),
+    bodyLarge: TextStyle(fontSize: 16, color: AppColors.black),
   );
 
   static TextTheme darkTextTheme = const TextTheme(
     displayLarge: TextStyle(
-        fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
-    bodyLarge: TextStyle(fontSize: 16, color: Colors.white),
+        fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.white),
+    titleLarge: TextStyle(fontSize: 48, color: AppColors.white),
+    bodyLarge: TextStyle(fontSize: 16, color: AppColors.white),
   );
 }
