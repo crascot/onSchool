@@ -1,5 +1,11 @@
 import { Type } from 'class-transformer';
-import { IsInt, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import {
+	IsInt,
+	IsNotEmpty,
+	IsString,
+	MinLength,
+	ValidateNested,
+} from 'class-validator';
 
 export class CreateUserBase {
 	@IsString()
@@ -12,6 +18,7 @@ export class CreateUserBase {
 
 	@IsString()
 	@IsNotEmpty()
+	@MinLength(6)
 	password: string;
 }
 
@@ -26,6 +33,7 @@ export class CreateUserWithRole {
 
 	@IsString()
 	@IsNotEmpty()
+	@MinLength(6)
 	password: string;
 
 	@IsInt()
