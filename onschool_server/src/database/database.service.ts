@@ -4,6 +4,7 @@ import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { Database, verbose } from 'sqlite3';
 import { RoleEnum } from 'TYPES/role-type';
+import { normalizeDatabasePath } from './database.utils';
 
 const INITIAL_ROLES: { name: RoleEnum; description: string }[] = [
 	{
@@ -37,7 +38,8 @@ export class DatabaseService implements OnModuleInit {
 	}
 
 	async init(): Promise<void> {
-		const dbPath = process.env.DATABASE_URL?.replace('sqlite://', '');
+		const dbPath = normalizeDatabasePath(process.env.DATABASE_URL || '');
+		console.log('Resolved DB path:', dbPath);
 
 		if (!dbPath) {
 			throw new Error('Database file not found');

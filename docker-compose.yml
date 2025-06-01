@@ -1,26 +1,51 @@
 version: "3.8"
 
 services:
-  onschool_server:
+  onschool_server_prod:
     build:
       context: ./onschool_server
-      dockerfile: Dockerfile
-    ports:
-      - "${PORT:-3000}:${PORT:-3000}"
-    environment:
-      - NODE_ENV=${NODE_ENV:-development}
+    container_name: onschool_server_prod
     env_file:
-      - ./onschool_server/.${NODE_ENV:-development}.env
-
+      - ./onschool_server/.env.production
     volumes:
-      - ./onschool_server/dev.sqlite:/usr/app/dev.sqlite
-      - ./onschool_server/prod.sqlite:/usr/app/prod.sqlite
+      - prod_data:/usr/app/data
+    ports:
+      - "4001:3000"
+
+  onschool_server_dev:
+    build:
+      context: ./onschool_server
+    container_name: onschool_server_dev
+    env_file:
+      - ./onschool_server/.env.development
+    volumes:
+      - dev_data:/usr/app/data
+    ports:
+      - "4002:3000"
+
+  onschool_server_test:
+    build:
+      context: ./onschool_server
+    container_name: onschool_server_test
+    env_file:
+      - ./onschool_server/.env.testing
+    volumes:
+      - test_data:/usr/app/data
+    ports:
+      - "4003:3000"
 
   nginx:
-    build:
-      context: .
-      dockerfile: Dockerfile.nginx
+    image: nginx:alpine
     ports:
       - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
-      - onschool_server
+      - onschool_server_prod
+      - onschool_server_dev
+      - onschool_server_test
+
+volumes:
+  prod_data:
+  dev_data:
+  test_data:
