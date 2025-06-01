@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_NAME: yourdockerhubusername/onschool-nginx
+      IMAGE_NAME: crascot/onschool-nginx
 
     steps:
       - name: Checkout code
