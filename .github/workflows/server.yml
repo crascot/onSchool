@@ -16,7 +16,7 @@ jobs:
       IMAGE_NAME: crascot/onschool-server
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
