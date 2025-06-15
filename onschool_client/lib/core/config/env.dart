@@ -1,11 +1,5 @@
 class Env {
-  static const String apiBaseUrl = String.fromEnvironment(
-    'API_BASE_URL',
-    defaultValue: 'http://localhost:8001',
-  );
+  static const String apiBaseUrl = "http://10.0.2.2/prod/"; // prod / dev / test
 
-  static const bool isProduction = bool.fromEnvironment(
-    'IS_PRODUCTION',
-    defaultValue: false,
-  );
+  static const bool isProduction = true;
 }
