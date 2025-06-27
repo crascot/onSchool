@@ -92,3 +92,4 @@ onschool_server/.c9/
 onschool_server/*.launch
 onschool_server/.settings/
 onschool_server/*.sublime-workspace
+onschool_server/local.sqlite
