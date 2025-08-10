@@ -5,7 +5,6 @@
 *.tmp
 *.swp
 *.pid
-*.seed
 *.pid.lock
 *.iml
 *.ipr
