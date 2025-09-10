@@ -1,16 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { DatabaseService } from 'DATABASE/database.service';
-import { AdminDetailsDto } from 'USER/dto/create-user-dto';
-import { TransformAdmin } from './utils/transformAdmin';
-import { RoleEnum } from 'types/role-type';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { DatabaseService } from "DATABASE/database.service";
+import { AdminDetailsDto } from "USER/dto/create-user-dto";
+import { TransformAdmin } from "./utils/transformAdmin";
+import { RoleEnum } from "types/role-type";
 
 @Injectable()
 export class AdminService {
-	constructor(private readonly dbService: DatabaseService) {}
+  constructor(private readonly dbService: DatabaseService) {}
 
-	async getAll() {
-		const result = await this.dbService.query(
-			`SELECT
+  async getAll() {
+    const result = await this.dbService.query(
+      `SELECT
 				users.id AS user_id,
 				users.name,
 				users.email,
@@ -29,15 +29,15 @@ export class AdminService {
 			JOIN
 				roles ON users.role_id = roles.id
 			WHERE roles.name = '${RoleEnum.ADMIN}'
-		`
-		);
+		`,
+    );
 
-		return TransformAdmin.transform(result);
-	}
+    return TransformAdmin.transform(result);
+  }
 
-	async getOne(user_id: number) {
-		const result = await this.dbService.query(
-			`SELECT
+  async getOne(user_id: number) {
+    const result = await this.dbService.query(
+      `SELECT
 				users.id AS user_id,
 				users.name,
 				users.email,
@@ -57,24 +57,21 @@ export class AdminService {
 				roles ON users.role_id = roles.id
 			WHERE users.id = ? AND roles.name = '${RoleEnum.ADMIN}'
 		`,
-			[user_id]
-		);
+      [user_id],
+    );
 
-		return TransformAdmin.transform(result[0]);
-	}
+    return TransformAdmin.transform(result[0]);
+  }
 
-	async create(body: AdminDetailsDto) {
-		const { user_id, phone } = body;
+  async create(body: AdminDetailsDto) {
+    const { user_id, phone } = body;
 
-		const adminResult = await this.dbService.query(
-			`INSERT INTO admin_details (phone, user_id) VALUES (?, ?) RETURNING id`,
-			[phone, user_id]
-		);
+    const adminResult = await this.dbService.query(`INSERT INTO admin_details (phone, user_id) VALUES (?, ?) RETURNING id`, [phone, user_id]);
 
-		if (!adminResult) {
-			throw new NotFoundException({ message: 'User not found' });
-		}
+    if (!adminResult) {
+      throw new NotFoundException({ message: "User not found" });
+    }
 
-		return adminResult[0].id;
-	}
+    return adminResult[0].id;
+  }
 }

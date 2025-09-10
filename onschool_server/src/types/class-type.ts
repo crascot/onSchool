@@ -1,7 +1,7 @@
-import { SchoolType } from './school-type';
+import { SchoolType } from "./school-type";
 
 export type ClassType = {
-	id: number;
-	name: string;
-	school: SchoolType;
+  id: number;
+  name: string;
+  school: SchoolType;
 };

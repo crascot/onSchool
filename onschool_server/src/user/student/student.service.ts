@@ -1,15 +1,15 @@
-import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
-import { DatabaseService } from 'DATABASE/database.service';
-import { StudentDetailsDto } from 'USER/dto/create-user-dto';
-import { TransformStudent } from './utils/transformStudent';
+import { HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
+import { DatabaseService } from "DATABASE/database.service";
+import { StudentDetailsDto } from "USER/dto/create-user-dto";
+import { TransformStudent } from "./utils/transformStudent";
 
 @Injectable()
 export class StudentService {
-	constructor(private readonly dbService: DatabaseService) {}
+  constructor(private readonly dbService: DatabaseService) {}
 
-	async getAll() {
-		const result = await this.dbService.query(
-			`SELECT 
+  async getAll() {
+    const result = await this.dbService.query(
+      `SELECT 
 				users.id AS user_id,
 				users.name,
 				users.email,
@@ -38,14 +38,14 @@ export class StudentService {
 			JOIN schools ON classes.school_id = schools.id
 			JOIN parent_details ON student_details.parent_id = parent_details.id
 			JOIN users AS parent_users ON parent_details.user_id = parent_users.id
-		  `
-		);
+		  `,
+    );
 
-		return TransformStudent.transform(result);
-	}
-	async getOne(user_id: number) {
-		const result = await this.dbService.query(
-			`SELECT 
+    return TransformStudent.transform(result);
+  }
+  async getOne(user_id: number) {
+    const result = await this.dbService.query(
+      `SELECT 
 				users.id AS user_id,
 				users.name,
 				users.email,
@@ -76,39 +76,33 @@ export class StudentService {
 			JOIN users AS parent_users ON parent_details.user_id = parent_users.id
 			WHERE users.id = ?
 		  `,
-			[user_id]
-		);
+      [user_id],
+    );
 
-		if (result.length === 0) {
-			throw new NotFoundException({
-				code: HttpStatus.NOT_FOUND,
-				message: 'Student not found',
-			});
-		}
+    if (result.length === 0) {
+      throw new NotFoundException({
+        code: HttpStatus.NOT_FOUND,
+        message: "Student not found",
+      });
+    }
 
-		return TransformStudent.transform(result[0]);
-	}
-	async create(body: StudentDetailsDto) {
-		const { user_id, class_id, parent_id } = body;
+    return TransformStudent.transform(result[0]);
+  }
+  async create(body: StudentDetailsDto) {
+    const { user_id, class_id, parent_id } = body;
 
-		const studentResult = await this.dbService.query(
-			`INSERT INTO student_details (user_id, class_id, parent_id) VALUES (?, ?, ?) RETURNING id`,
-			[user_id, class_id, parent_id]
-		);
+    const studentResult = await this.dbService.query(`INSERT INTO student_details (user_id, class_id, parent_id) VALUES (?, ?, ?) RETURNING id`, [user_id, class_id, parent_id]);
 
-		if (!studentResult) {
-			throw new NotFoundException({ message: 'User not found' });
-		}
+    if (!studentResult) {
+      throw new NotFoundException({ message: "User not found" });
+    }
 
-		const diaryResult = await this.dbService.query(
-			`INSERT INTO diaries (student_id) VALUES (?) RETURNING id`,
-			[studentResult[0].id]
-		);
+    const diaryResult = await this.dbService.query(`INSERT INTO diaries (student_id) VALUES (?) RETURNING id`, [studentResult[0].id]);
 
-		if (!diaryResult) {
-			throw new NotFoundException('Diary not created');
-		}
+    if (!diaryResult) {
+      throw new NotFoundException("Diary not created");
+    }
 
-		return studentResult[0].id;
-	}
+    return studentResult[0].id;
+  }
 }

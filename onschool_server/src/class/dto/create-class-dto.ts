@@ -1,11 +1,11 @@
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { IsInt, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateClassDto {
-	@IsString()
-	@IsNotEmpty()
-	name: string;
+  @IsString()
+  @IsNotEmpty()
+  name: string;
 
-	@IsInt()
-	@IsNotEmpty()
-	school_id: number;
+  @IsInt()
+  @IsNotEmpty()
+  school_id: number;
 }

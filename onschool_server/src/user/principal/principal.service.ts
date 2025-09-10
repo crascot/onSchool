@@ -1,16 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { DatabaseService } from 'DATABASE/database.service';
-import { TransformPrincipal } from './utils/transformPrincipal';
-import { AdminDetailsDto } from 'USER/dto/create-user-dto';
-import { RoleEnum } from 'types/role-type';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { DatabaseService } from "DATABASE/database.service";
+import { TransformPrincipal } from "./utils/transformPrincipal";
+import { AdminDetailsDto } from "USER/dto/create-user-dto";
+import { RoleEnum } from "types/role-type";
 
 @Injectable()
 export class PrincipalService {
-	constructor(private readonly dbService: DatabaseService) {}
+  constructor(private readonly dbService: DatabaseService) {}
 
-	async getAll() {
-		const result = await this.dbService.query(
-			`SELECT
+  async getAll() {
+    const result = await this.dbService.query(
+      `SELECT
 				users.id AS user_id,
 				users.name,
 				users.email,
@@ -37,15 +37,15 @@ export class PrincipalService {
 			LEFT JOIN
 				schools ON admin_details.school_id = schools.id
 			WHERE roles.name = '${RoleEnum.PRINCIPAL}'
-		`
-		);
+		`,
+    );
 
-		return TransformPrincipal.transform(result);
-	}
+    return TransformPrincipal.transform(result);
+  }
 
-	async getOne(user_id: number) {
-		const result = await this.dbService.query(
-			`SELECT
+  async getOne(user_id: number) {
+    const result = await this.dbService.query(
+      `SELECT
 				users.id AS user_id,
 				users.name,
 				users.email,
@@ -73,24 +73,21 @@ export class PrincipalService {
 				schools ON admin_details.school_id = schools.id
 				WHERE users.id = ? AND roles.name = '${RoleEnum.PRINCIPAL}'
 		`,
-			[user_id]
-		);
+      [user_id],
+    );
 
-		return TransformPrincipal.transform(result[0]);
-	}
+    return TransformPrincipal.transform(result[0]);
+  }
 
-	async create(body: AdminDetailsDto) {
-		const { user_id, phone, school_id } = body;
+  async create(body: AdminDetailsDto) {
+    const { user_id, phone, school_id } = body;
 
-		const principalResult = await this.dbService.query(
-			`INSERT INTO admin_details (phone, user_id, school_id) VALUES (?, ?, ?) RETURNING id`,
-			[phone, user_id, school_id]
-		);
+    const principalResult = await this.dbService.query(`INSERT INTO admin_details (phone, user_id, school_id) VALUES (?, ?, ?) RETURNING id`, [phone, user_id, school_id]);
 
-		if (!principalResult) {
-			throw new NotFoundException({ message: 'User not found' });
-		}
+    if (!principalResult) {
+      throw new NotFoundException({ message: "User not found" });
+    }
 
-		return principalResult[0].id;
-	}
+    return principalResult[0].id;
+  }
 }

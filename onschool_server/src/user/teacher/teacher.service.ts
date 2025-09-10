@@ -1,15 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { DatabaseService } from 'DATABASE/database.service';
-import { TeacherDetailsDto } from 'USER/dto/create-user-dto';
-import { TransformTeacher } from './utils/transformTeacher';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { DatabaseService } from "DATABASE/database.service";
+import { TeacherDetailsDto } from "USER/dto/create-user-dto";
+import { TransformTeacher } from "./utils/transformTeacher";
 
 @Injectable()
 export class TeacherService {
-	constructor(private readonly dbService: DatabaseService) {}
+  constructor(private readonly dbService: DatabaseService) {}
 
-	async getAll() {
-		const result = await this.dbService.query(
-			`SELECT
+  async getAll() {
+    const result = await this.dbService.query(
+      `SELECT
 				users.id AS user_id,
 				users.name,
 				users.email,
@@ -29,15 +29,15 @@ export class TeacherService {
 				teacher_details ON users.id = teacher_details.user_id
 			JOIN
 				roles ON users.role_id = roles.id
-		`
-		);
+		`,
+    );
 
-		return TransformTeacher.transform(result);
-	}
+    return TransformTeacher.transform(result);
+  }
 
-	async getOne(user_id: number) {
-		const result = await this.dbService.query(
-			`SELECT
+  async getOne(user_id: number) {
+    const result = await this.dbService.query(
+      `SELECT
 				users.id AS user_id,
 				users.name,
 				users.email,
@@ -59,42 +59,30 @@ export class TeacherService {
 				roles ON users.role_id = roles.id
 			WHERE users.id = ?
 		`,
-			[user_id]
-		);
+      [user_id],
+    );
 
-		return TransformTeacher.transform(result[0]);
-	}
+    return TransformTeacher.transform(result[0]);
+  }
 
-	async create(body: TeacherDetailsDto) {
-		const {
-			user_id,
-			subject_specialization,
-			experience_years,
-			qualification,
-			salary,
-		} = body;
+  async create(body: TeacherDetailsDto) {
+    const { user_id, subject_specialization, experience_years, qualification, salary } = body;
 
-		const result = await this.dbService.query(
-			`INSERT INTO
+    const result = await this.dbService.query(
+      `INSERT INTO
 				teacher_details
 				(user_id, subject_specialization, experience_years, qualification, salary)
 			VALUES
 				(?, ?, ?, ?, ?)
 			RETURNING
 				id`,
-			[
-				user_id,
-				subject_specialization,
-				experience_years,
-				qualification,
-				salary,
-			]
-		);
+      [user_id, subject_specialization, experience_years, qualification, salary],
+    );
 
-		if (!result) {
-			throw new NotFoundException({ message: 'User not found' });
-		}
+    if (!result) {
+      throw new NotFoundException({ message: "User not found" });
+    }
 
-		return result[0].id;
-	}
+    return result[0].id;
+  }
 }
