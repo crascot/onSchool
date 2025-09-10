@@ -1,15 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { DatabaseService } from 'DATABASE/database.service';
-import { ParentDetailsDto } from 'USER/dto/create-user-dto';
-import { TransformParent } from './utils/transformParent';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { DatabaseService } from "DATABASE/database.service";
+import { ParentDetailsDto } from "USER/dto/create-user-dto";
+import { TransformParent } from "./utils/transformParent";
 
 @Injectable()
 export class ParentService {
-	constructor(private readonly dbService: DatabaseService) {}
+  constructor(private readonly dbService: DatabaseService) {}
 
-	async getAll() {
-		const result = await this.dbService.query(
-			`SELECT
+  async getAll() {
+    const result = await this.dbService.query(
+      `SELECT
 				users.id AS user_id,
 				users.name,
 				users.email,
@@ -28,15 +28,15 @@ export class ParentService {
 			parent_details ON users.id = parent_details.user_id
 			JOIN
 				roles ON users.role_id = roles.id
-		`
-		);
+		`,
+    );
 
-		return TransformParent.transform(result);
-	}
+    return TransformParent.transform(result);
+  }
 
-	async getOne(user_id: number) {
-		const result = await this.dbService.query(
-			`SELECT
+  async getOne(user_id: number) {
+    const result = await this.dbService.query(
+      `SELECT
 				users.id AS user_id,
 				users.name,
 				users.email,
@@ -57,30 +57,27 @@ export class ParentService {
 				roles ON users.role_id = roles.id
 			WHERE users.id = ?
 		`,
-			[user_id]
-		);
+      [user_id],
+    );
 
-		return TransformParent.transform(result[0]);
-	}
+    return TransformParent.transform(result[0]);
+  }
 
-	async create(body: ParentDetailsDto) {
-		const {
-			user_id,
-			balance = 0,
-			address,
-			relationship,
-			emergency_contact,
-		} = body;
+  async create(body: ParentDetailsDto) {
+    const { user_id, balance = 0, address, relationship, emergency_contact } = body;
 
-		const parentResult = await this.dbService.query(
-			`INSERT INTO parent_details (user_id, balance, address, relationship, emergency_contact) VALUES (?, ?, ?, ?, ?) RETURNING id`,
-			[user_id, balance, address, relationship, emergency_contact]
-		);
+    const parentResult = await this.dbService.query(`INSERT INTO parent_details (user_id, balance, address, relationship, emergency_contact) VALUES (?, ?, ?, ?, ?) RETURNING id`, [
+      user_id,
+      balance,
+      address,
+      relationship,
+      emergency_contact,
+    ]);
 
-		if (!parentResult) {
-			throw new NotFoundException({ message: 'User not found' });
-		}
+    if (!parentResult) {
+      throw new NotFoundException({ message: "User not found" });
+    }
 
-		return parentResult[0].id;
-	}
+    return parentResult[0].id;
+  }
 }
