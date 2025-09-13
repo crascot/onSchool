@@ -35,60 +35,17 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 # =====================
 # ⚙️ Переменные окружения
 # =====================
-.env
+# .env
 .env.local
-.env.*.local
-
-# ===================
-# 📱 Flutter (Client)
-# ===================
-onschool_client/.dart_tool/
-onschool_client/.flutter-plugins
-onschool_client/.flutter-plugins-dependencies
-onschool_client/.packages
-onschool_client/.pub-cache/
-onschool_client/.pub/
-onschool_client/build/
-onschool_client/macos/Flutter/ephemeral/
-onschool_client/ios/Flutter/
-onschool_client/ios/Flutter/.last_build_id
-onschool_client/linux/flutter/
-onschool_client/windows/flutter/
-onschool_client/web/.dart_tool/
-onschool_client/android/app/debug/
-onschool_client/android/app/profile/
-onschool_client/android/app/release/
-onschool_client/**/doc/api/
-
-# редко используемые и устаревшие каталоги/файлы — исключаем только если уверен, что они используются
-onschool_client/*.class
-onschool_client/*.pyc
-onschool_client/.atom/
-onschool_client/.buildlog/
-onschool_client/.history
-onschool_client/.svn/
-onschool_client/migrate_working_dir/
-onschool_client/app.*.symbols
-onschool_client/app.*.map.json
+# .env.*.local
 
 # ===================
 # 🧠 NestJS (Server)
 # ===================
-onschool_server/node_modules/
-onschool_server/dist/
-onschool_server/build/
-onschool_server/coverage/
-onschool_server/.nyc_output/
-onschool_server/logs/
-onschool_server/npm-debug.log*
-onschool_server/pnpm-debug.log*
-onschool_server/yarn-debug.log*
-onschool_server/yarn-error.log*
-onschool_server/lerna-debug.log*
-onschool_server/.project
-onschool_server/.classpath
-onschool_server/.c9/
-onschool_server/*.launch
-onschool_server/.settings/
-onschool_server/*.sublime-workspace
-onschool_server/local.sqlite
+logs/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+*.sqlite

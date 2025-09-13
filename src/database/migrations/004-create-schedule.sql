@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS schedule (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    class_id INTEGER NOT NULL,
+    day_of_week TEXT NOT NULL,
+    FOREIGN KEY (class_id) REFERENCES classes (id) ON DELETE CASCADE
+)

@@ -1,8 +1,0 @@
-CREATE TABLE IF NOT EXISTS schools (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL,
-  status TEXT NOT NULL, --государственная или частная школа
-  address TEXT NOT NULL,
-  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-  updated_at TEXT DEFAULT CURRENT_TIMESTAMP
-)
