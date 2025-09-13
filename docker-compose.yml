@@ -3,10 +3,10 @@ version: "3.8"
 services:
   onschool_server_prod:
     build:
-      context: ./onschool_server
+      context: .
     container_name: onschool_server_prod
     env_file:
-      - ./onschool_server/.env.production
+      - .env.production
     volumes:
       - prod_data:/usr/app/data
     ports:
@@ -14,10 +14,10 @@ services:
 
   onschool_server_dev:
     build:
-      context: ./onschool_server
+      context: .
     container_name: onschool_server_dev
     env_file:
-      - ./onschool_server/.env.development
+      - .env.development
     volumes:
       - dev_data:/usr/app/data
     ports:
@@ -25,10 +25,10 @@ services:
 
   onschool_server_test:
     build:
-      context: ./onschool_server
+      context: .
     container_name: onschool_server_test
     env_file:
-      - ./onschool_server/.env.testing
+      - .env.testing
     volumes:
       - test_data:/usr/app/data
     ports:

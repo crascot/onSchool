@@ -5,7 +5,13 @@ on:
     branches:
       - main
     paths:
-      - "onschool_server/**"
+      - "src/**"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig*.json"
+      - "nest-cli.json"
+      - "Dockerfile"
+      - ".dockerignore"
       - ".github/workflows/server.yml"
 
 jobs:
