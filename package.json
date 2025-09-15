@@ -15,8 +15,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --check",
-    "format:write": "prettier . --write",
-    "prepare": "husky"
+    "format:write": "prettier . --write"
   },
   "dependencies": {
     "@nestjs/common": "11.1.6",
