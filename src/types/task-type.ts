@@ -1,6 +1,6 @@
-import { ClassType } from "./class-type";
-import { LessonType } from "./lesson-type";
-import { StudentDetailsType } from "./user-type";
+import type { ClassType } from "./class-type";
+import type { LessonType } from "./lesson-type";
+import type { StudentDetailsType } from "./user-type";
 
 export type TaskType = {
   id: number;

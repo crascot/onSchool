@@ -1,4 +1,4 @@
-import { SchoolType } from "./school-type";
+import type { SchoolType } from "./school-type";
 
 export type ClassType = {
   id: number;
