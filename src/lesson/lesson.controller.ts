@@ -4,6 +4,9 @@ import { CreateLessonDto } from "./dto/create-lesson-dto";
 import { ClassService } from "CLASS/class.service";
 import { ScheduleService } from "SCHEDULE/schedule.service";
 
+// eslint-disable-next-line no-console
+console.log("asdsda");
+
 @Controller("lesson")
 export class LessonController {
   constructor(
