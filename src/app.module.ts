@@ -6,12 +6,12 @@ import { DatabaseModule } from "DATABASE/database.module";
 import { RoleModule } from "ROLE/role.module";
 import { SchoolModule } from "SCHOOL/school.module";
 import { UserModule } from "USER/user.module";
-import { DiaryModule } from "diary/diary.module";
-import { GradeModule } from "grade/grade.module";
-import { LessonModule } from "lesson/lesson.module";
-import { ScheduleModule } from "schedule/schedule.module";
 import { TaskModule } from "./task/task.module";
-import configuration from "config/configuration";
+import configuration from "CONFIG/configuration";
+import { LessonModule } from "LESSON/lesson.module";
+import { DiaryModule } from "DIARY/diary.module";
+import { GradeModule } from "GRADE/grade.module";
+import { ScheduleModule } from "SCHEDULE/schedule.module";
 
 @Module({
   imports: [

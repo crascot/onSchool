@@ -1,5 +1,5 @@
 import { IsIn, IsInt, IsNotEmpty, IsString } from "class-validator";
-import { Grade } from "types/grade-type";
+import { Grade } from "TYPES/grade-type";
 
 export class CreateGradeDto {
   private static readonly allowedGrades = Object.values<Grade>([1, 2, 3, 4, 5]);

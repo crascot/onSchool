@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { DatabaseService } from "DATABASE/database.service";
 import { TransformPrincipal } from "./utils/transformPrincipal";
 import { AdminDetailsDto } from "USER/dto/create-user-dto";
-import { RoleEnum } from "types/role-type";
+import { RoleEnum } from "TYPES/role-type";
 
 @Injectable()
 export class PrincipalService {

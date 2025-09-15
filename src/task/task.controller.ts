@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put }
 import { TaskService } from "./task.service";
 import { CreateTaskDto } from "./dto/create-task-dto";
 import { ClassService } from "CLASS/class.service";
-import { LessonService } from "lesson/lesson.service";
+import { LessonService } from "LESSON/lesson.service";
 import { StudentService } from "USER/student/student.service";
 
 @Controller("task")
