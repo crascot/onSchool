@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from "@nestjs/common";
 import { GradeService } from "./grade.service";
 import { CreateGradeDto } from "./dto/create-grade-dto";
-import { DiaryService } from "diary/diary.service";
-import { LessonService } from "lesson/lesson.service";
+import { DiaryService } from "DIARY/diary.service";
+import { LessonService } from "LESSON/lesson.service";
 
 @Controller("grade")
 export class GradeController {

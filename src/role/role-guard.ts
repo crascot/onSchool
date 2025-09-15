@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { CanActivate, ExecutionContext } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { Reflector } from "@nestjs/core";
-import { RoleEnum } from "types/role-type";
+import { RoleEnum } from "TYPES/role-type";
 import { ROLES_KEY } from "./role.decorator";
 
 @Injectable()

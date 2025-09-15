@@ -6,7 +6,7 @@ import { AdminModule } from "./admin/admin.module";
 import { TeacherModule } from "./teacher/teacher.module";
 import { ParentModule } from "./parent/parent.module";
 import { StudentModule } from "./student/student.module";
-import { DiaryModule } from "diary/diary.module";
+import { DiaryModule } from "DIARY/diary.module";
 import { ClassModule } from "CLASS/class.module";
 import { RoleModule } from "ROLE/role.module";
 import { PrincipalModule } from "./principal/principal.module";

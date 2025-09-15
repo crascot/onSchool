@@ -1,4 +1,4 @@
-import { Grade, GradeType } from "types/grade-type";
+import type { Grade, GradeType } from "TYPES/grade-type";
 
 type InputGradeType = {
   grade_id: number;

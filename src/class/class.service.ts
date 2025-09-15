@@ -1,6 +1,6 @@
 import { HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 import { DatabaseService } from "DATABASE/database.service";
-import { ClassType } from "types/class-type";
+import { ClassType } from "TYPES/class-type";
 import { CreateClassDto } from "./dto/create-class-dto";
 
 @Injectable()

@@ -1,5 +1,5 @@
-import { RoleEnum } from "types/role-type";
-import { UserType } from "types/user-type";
+import type { RoleEnum } from "TYPES/role-type";
+import type { UserType } from "TYPES/user-type";
 
 export type InputAdminType = {
   user_id: number;

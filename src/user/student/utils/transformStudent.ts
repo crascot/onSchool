@@ -1,5 +1,5 @@
-import { RoleEnum } from "types/role-type";
-import { UserType } from "types/user-type";
+import type { RoleEnum } from "TYPES/role-type";
+import type { UserType } from "TYPES/user-type";
 
 type InputStudentType = {
   user_id: number;
