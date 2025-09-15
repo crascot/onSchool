@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { DatabaseService } from "DATABASE/database.service";
 import { CreateGradeDto } from "./dto/create-grade-dto";
+import { DatabaseService } from "DATABASE/database.service";
 
 @Injectable()
 export class GradeService {

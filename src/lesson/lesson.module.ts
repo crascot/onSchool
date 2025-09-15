@@ -3,7 +3,7 @@ import { LessonController } from "./lesson.controller";
 import { LessonService } from "./lesson.service";
 import { DatabaseModule } from "DATABASE/database.module";
 import { ClassModule } from "CLASS/class.module";
-import { ScheduleModule } from "schedule/schedule.module";
+import { ScheduleModule } from "SCHEDULE/schedule.module";
 
 @Module({
   imports: [DatabaseModule, ClassModule, ScheduleModule],

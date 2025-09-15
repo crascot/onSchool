@@ -1,5 +1,5 @@
-import { ScheduleType } from "types/schedule-type";
-import { SchoolType } from "types/school-type";
+import type { ScheduleType } from "TYPES/schedule-type";
+import type { SchoolType } from "TYPES/school-type";
 
 type InputScheduleType = {
   schedule_id: number;

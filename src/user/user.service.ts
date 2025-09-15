@@ -7,7 +7,7 @@ import { TeacherService } from "./teacher/teacher.service";
 import { ParentService } from "./parent/parent.service";
 import { StudentService } from "./student/student.service";
 import { RoleService } from "ROLE/role.service";
-import { RoleEnum } from "types/role-type";
+import { RoleEnum } from "TYPES/role-type";
 import { PrincipalService } from "./principal/principal.service";
 
 @Injectable()

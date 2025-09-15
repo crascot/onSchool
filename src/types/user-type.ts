@@ -1,6 +1,6 @@
-import { ClassType } from "./class-type";
-import { RoleType } from "./role-type";
-import { SchoolType } from "./school-type";
+import type { ClassType } from "./class-type";
+import type { RoleType } from "./role-type";
+import type { SchoolType } from "./school-type";
 
 export type UserBaseType = {
   id: number;

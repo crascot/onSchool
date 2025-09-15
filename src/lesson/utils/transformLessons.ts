@@ -1,5 +1,5 @@
-import { LessonType } from "types/lesson-type";
-import { SchoolType } from "types/school-type";
+import type { LessonType } from "TYPES/lesson-type";
+import type { SchoolType } from "TYPES/school-type";
 
 type InputLessonType = {
   lessons_id: number;

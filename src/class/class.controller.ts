@@ -2,8 +2,8 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put }
 import { ClassService } from "./class.service";
 import { CreateClassDto } from "./dto/create-class-dto";
 import { Roles } from "ROLE/role.decorator";
-import { RoleEnum } from "types/role-type";
 import { SchoolService } from "SCHOOL/school.service";
+import { RoleEnum } from "TYPES/role-type";
 
 @Controller("class")
 export class ClassController {

@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put }
 import { LessonService } from "./lesson.service";
 import { CreateLessonDto } from "./dto/create-lesson-dto";
 import { ClassService } from "CLASS/class.service";
-import { ScheduleService } from "schedule/schedule.service";
+import { ScheduleService } from "SCHEDULE/schedule.service";
 
 @Controller("lesson")
 export class LessonController {
