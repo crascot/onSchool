@@ -16,6 +16,7 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+tsconfig.tsbuildinfo
 
 node_modules/
 build/
