@@ -1,5 +1,5 @@
-import { DiaryType } from "./diary-type";
-import { LessonType } from "./lesson-type";
+import type { DiaryType } from "./diary-type";
+import type { LessonType } from "./lesson-type";
 
 export type Grade = 1 | 2 | 3 | 4 | 5;
 

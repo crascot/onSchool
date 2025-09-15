@@ -1,4 +1,4 @@
-import { ClassType } from "./class-type";
+import type { ClassType } from "./class-type";
 
 export type ScheduleType = {
   id: number;

@@ -1,4 +1,4 @@
-import { UserType } from "./user-type";
+import type { UserType } from "./user-type";
 
 export type DiaryType = {
   id: number;
